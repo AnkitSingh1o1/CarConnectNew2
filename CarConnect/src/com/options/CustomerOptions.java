@@ -122,7 +122,8 @@ public class CustomerOptions {
 				System.out.print("Enter address id : ");
 				int addressId = sc.nextInt();
 
-				Customer customer = new Customer(id, firstName, lastName, email, phoneNo, registrationDate, userId,
+				Customer customer = new Customer(id, firstName, lastName, email, phoneNo, 
+						registrationDate, userId,
 						addressId);
 				try {
 					int status = customerService.update(customer);

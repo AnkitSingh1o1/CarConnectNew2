@@ -23,4 +23,5 @@ public interface ReservationDao {
 	List<Reservation> findAllReservationsById(int id) throws SQLException, ResourceNotFoundException;
 	//GroupBy
 	List<ReservationPerCustomer> getReservationCountPerCustomer() throws SQLException;
+	Reservation getReservatonById(int reservationId) throws SQLException;
 }

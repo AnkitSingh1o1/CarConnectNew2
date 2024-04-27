@@ -265,4 +265,25 @@ public class ReservationDaoImpl implements ReservationDao {
 		return list;
 	}
 
+	@Override
+	public Reservation getReservatonById(int reservationId) throws SQLException {
+		Connection con = DBConnection.dbConnect();
+		String sql = "select * from reservation where reservation_id = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, reservationId);
+		ResultSet rst = pstmt.executeQuery(sql);
+	
+		int id = rst.getInt("reservation_id");
+		String startDate = rst.getString("reservation_start_date");
+		String endDate = rst.getString("reservation_end_date");
+		double totalCost = rst.getDouble("reservation_total_cost");
+		String status = rst.getString("reservation_status");
+		int cId = rst.getInt("customer_id");
+		int vId = rst.getInt("vehicle_id");
+		int aId = rst.getInt("admin_id");
+		Reservation reservation = new Reservation(cId, vId, id, startDate, endDate, totalCost, status, aId);
+	
+		return reservation;
+	}
+
 }

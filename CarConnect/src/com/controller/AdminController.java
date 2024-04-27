@@ -8,11 +8,16 @@ import java.util.Scanner;
 import com.dto.AdminDto;
 import com.model.Admin;
 import com.model.Reservation;
+import com.model.Review;
+import com.model.Vehicle;
 import com.model.Vendor;
 import com.options.CustomerOptions;
+import com.options.VendorOptions;
 //import com.exception.ResourceNotFoundException;
 import com.service.AdminService;
 import com.service.ReservationService;
+import com.service.ReviewService;
+import com.service.VehicleService;
 import com.service.VendorService;
 
 public class AdminController {
@@ -22,7 +27,9 @@ public class AdminController {
 		AdminService adminService = new AdminService();
 		VendorService vendorService = new VendorService();
 		Vendor vendor = new Vendor();
+		ReviewService reviewService = new com.service.ReviewService();
 		ReservationService reservationService = new ReservationService();
+		VehicleService vehicleService = new VehicleService();
 
 		while(true) {
 			
@@ -195,7 +202,11 @@ public class AdminController {
 					String adminJoinDate = sc.nextLine();
 					
 					Admin admin = new Admin(adminId,adminFName,adminLName,adminEmail,adminPhoneNumber,adminRole,adminJoinDate);
+				try {
 					int status = adminService.addAdmin(admin);
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
 					
 					
 					break;

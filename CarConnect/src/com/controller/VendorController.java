@@ -227,26 +227,20 @@ public class VendorController {
 					System.out.println("Enter a Reservation Id to close that reservation:");
 					int reservationId1 = sc.nextInt();
 					
-					for(Reservation r : list1) {
-						if(r.getReservation_id() == reservationId1) {
-							
-							//Create a new object
-							Reservation updatedReservation = new Reservation(r.getCustomer_id(), r.getVehicle_id(), 
-									r.getReservation_id(), r.getReservation_start_date(), r.getReservation_end_date(),
-									r.getReservation_total_cost(), "completed", r.getAdmin_id());
-							
-							//send updated object to update method
-							try {
-								reservationService.update(reservationId1, updatedReservation);
-							} catch (ResourceNotFoundException e) {
-								System.out.println(e.getMessage());
-							}
-							
-							break;
-						}
-					}
-					System.out.println("Thank you for Accepting");
+	
+					Reservation updatedReservation = reservationService.getReservatonById(reservationId1);
+					
+					updatedReservation.setReservation_status("complete");
+					
+					int status = reservationService.update(reservationId1, updatedReservation);
+					if (status == 1)
+						System.out.println("Vehicle returned successfully!!!");
+					else
+						System.out.println("Vehicle not returned");
+
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
 				
@@ -338,11 +332,11 @@ public class VendorController {
 	}
 	
 	//Login will call this method to access this controller
-	public static void vendorMenu(String[] args) {
+	public static void vendorMenu(String username, String password) {
 		
 		VendorService vendorService = new VendorService();
 		try {
-			String vendorId = vendorService.getVendorIdByUsernamePassword(args[0], args[1]);
+			String vendorId = vendorService.getVendorIdByUsernamePassword(username, password);
 			String[] sarr = { vendorId };
 			main(sarr);
 		} catch (SQLException e) {

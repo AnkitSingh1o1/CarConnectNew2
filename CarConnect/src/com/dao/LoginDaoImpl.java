@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.model.Login;
+//import com.model.Login;
 import com.model.User;
 import com.utility.DBConnection;
 

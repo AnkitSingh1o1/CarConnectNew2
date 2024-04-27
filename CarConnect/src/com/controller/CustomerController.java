@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import com.exception.InvalidInputException;
 import com.exception.ResourceNotFoundException;
 import com.model.Reservation;
 import com.model.Review;
@@ -66,8 +68,8 @@ public class CustomerController {
 									"Comments: " + a.getReview_comment() + ", Rating: " + a.getReview_rating());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
-					System.out.println("No reviews avalable");
+				} catch (InvalidInputException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 
@@ -151,7 +153,7 @@ public class CustomerController {
 						System.out.println(a);
 					System.out.print("Choose reservation id from above to return : ");
 					int reservationId = sc.nextInt();
-					Reservation updatedReservation = reservationService.getReservatonByVehicleId(reservationId);
+					Reservation updatedReservation = reservationService.getReservatonById(reservationId);
 					updatedReservation.setReservation_status("due");
 					int status = reservationService.update(reservationId, updatedReservation);
 					if (status == 1)

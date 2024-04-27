@@ -2,7 +2,7 @@ package com.dao;
 
 import java.sql.SQLException;
 
-import com.model.Login;
+//import com.model.Login;
 import com.model.User;
 
 

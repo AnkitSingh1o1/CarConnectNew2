@@ -84,4 +84,8 @@ public class ReservationService {
 		
 		return dao.vendorFindAllReservationsByStatus(id, status);
 	}
+
+	public Reservation getReservatonById(int reservationId) throws SQLException {
+		return dao.getReservatonById(reservationId);
+	}
 }

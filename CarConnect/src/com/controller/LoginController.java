@@ -18,6 +18,8 @@ public class LoginController {
 		UserService userService = new UserService();
 		CustomerService customerService = new CustomerService();
 		AddressService addressService = new AddressService();
+		
+		
 		Scanner sc = new Scanner(System.in);
 		boolean loggedIn = false;
 
@@ -54,7 +56,7 @@ public class LoginController {
 					}
 
 					else if (userLogin.getUserRole().equalsIgnoreCase("vendor")) {
-						 VendorController.vendorMenu();
+						 VendorController.vendorMenu(username, password);
 					}
 
 					else {
