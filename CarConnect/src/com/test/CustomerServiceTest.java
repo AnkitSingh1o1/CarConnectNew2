@@ -1,3 +1,5 @@
+// Author : Anirudh Suryawanshi
+
 package com.test;
 
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import org.junit.Test;
 
 import com.dto.CustomersWithReservationsDto;
 import com.dto.CustomersWithTotalSpentDto;
+import com.exception.DatabaseConnectionException;
 import com.service.CustomerService;
 
 public class CustomerServiceTest {
@@ -34,7 +37,7 @@ public class CustomerServiceTest {
 		try {
 			actualList = customerService.getCustomerWithNumberOfReservations();
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 2-------------
@@ -44,7 +47,7 @@ public class CustomerServiceTest {
 			actualList = customerService.getCustomerWithNumberOfReservations();
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 3-------------
@@ -54,7 +57,7 @@ public class CustomerServiceTest {
 			actualList = customerService.getCustomerWithNumberOfReservations();
 			actualList.remove(0);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 4-------------
@@ -65,7 +68,7 @@ public class CustomerServiceTest {
 			actualList.remove(0);
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 	}
 
@@ -88,7 +91,7 @@ public class CustomerServiceTest {
 		try {
 			actualList = customerService.getTotalSpentByCustomer();
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 2-------------
@@ -98,7 +101,7 @@ public class CustomerServiceTest {
 			actualList = customerService.getTotalSpentByCustomer();
 			actualList.remove(0);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 3-------------
@@ -108,7 +111,7 @@ public class CustomerServiceTest {
 			actualList = customerService.getTotalSpentByCustomer();
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 4-------------
@@ -119,7 +122,7 @@ public class CustomerServiceTest {
 			actualList.remove(0);
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 		}
 	}
 }

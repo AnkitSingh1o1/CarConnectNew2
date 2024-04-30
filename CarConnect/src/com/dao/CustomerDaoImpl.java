@@ -1,3 +1,5 @@
+// Author : Anirudh Suryawanshi
+
 package com.dao;
 
 import java.sql.Connection;
@@ -10,6 +12,7 @@ import java.util.List;
 import com.dto.CustomerReservationDetailsDto;
 import com.dto.CustomersWithReservationsDto;
 import com.dto.CustomersWithTotalSpentDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.Customer;
 import com.utility.DBConnection;
@@ -17,7 +20,7 @@ import com.utility.DBConnection;
 public class CustomerDaoImpl implements CustomerDao {
 
 	@Override
-	public int save(Customer cutomer) throws SQLException {
+	public int save(Customer cutomer) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "insert into customer (customer_id, customer_first_name, customer_last_name,"
 				+ " customer_email,customer_phone_number, customer_registration_date, user_id, "
@@ -37,7 +40,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public void deleteById(int id) throws ResourceNotFoundException, SQLException {
+	public void deleteById(int id) throws ResourceNotFoundException, SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "delete from customer where customer_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -47,7 +50,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update customer set isActive='no' where customer_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -57,7 +60,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public int update(Customer customer) throws SQLException, ResourceNotFoundException {
+	public int update(Customer customer) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update customer set customer_first_name=?, customer_last_name=?, "
 				+ "customer_email=?,customer_phone_number=?, customer_registration_date=?, "
@@ -77,7 +80,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public List<Customer> findALL() throws SQLException {
+	public List<Customer> findALL() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from customer where isActive='Yes'";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -101,7 +104,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public boolean findOne(int id) throws SQLException, ResourceNotFoundException {
+	public boolean findOne(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select customer_id from customer where customer_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -113,7 +116,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public List<CustomersWithReservationsDto> getCustomerWithNumberOfReservations() throws SQLException {
+	public List<CustomersWithReservationsDto> getCustomerWithNumberOfReservations() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select c.customer_id, c.customer_first_name,c.customer_last_name , count(r.reservation_id) "
 				+ "as number_of_reservation from customer c JOIN reservation r ON "
@@ -136,7 +139,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public List<CustomersWithTotalSpentDto> getTotalSpentByCustomer() throws SQLException {
+	public List<CustomersWithTotalSpentDto> getTotalSpentByCustomer() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "SELECT c.customer_id, c.customer_first_name, c.customer_last_name,"
 				+ " SUM(r.reservation_total_cost) AS total_spent FROM Customer c JOIN Reservation r "
@@ -158,7 +161,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public List<CustomerReservationDetailsDto> getCustomerReservationDetails(int customerId) throws SQLException {
+	public List<CustomerReservationDetailsDto> getCustomerReservationDetails(int customerId) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "SELECT r.reservation_id, r.reservation_start_date,r.reservation_end_date,"
 				+ "r.reservation_total_cost,r.reservation_status,r.customer_id, v.vehicle_model,"
@@ -190,7 +193,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public int getCustomerIdByUsernamePassword(String username, String password) throws SQLException {
+	public int getCustomerIdByUsernamePassword(String username, String password) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select c.customer_id from customer c JOIN user u ON c.user_id=u.user_id "
 				+ "where u.user_username=? AND u.user_password=?;";
@@ -203,5 +206,33 @@ public class CustomerDaoImpl implements CustomerDao {
 			customerId = rs.getInt("customer_id");
 		DBConnection.dbClose();
 		return customerId;
+	}
+
+	@Override
+	public int getUserIdByCustomerId(int customerid) throws SQLException, DatabaseConnectionException {
+		Connection con = DBConnection.dbConnect();
+		String sql = "select user_id from customer where customer_id=?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, customerid);
+		ResultSet rs = pstmt.executeQuery();
+		int userId = 0;
+		if (rs.next())
+			userId = rs.getInt("user_id");
+		DBConnection.dbClose();
+		return userId;
+	}
+
+	@Override
+	public int getAddressIdByCustomerId(int customerid) throws SQLException, DatabaseConnectionException {
+		Connection con = DBConnection.dbConnect();
+		String sql = "select address_id from customer where customer_id=?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, customerid);
+		ResultSet rs = pstmt.executeQuery();
+		int addressId = 0;
+		if (rs.next())
+			addressId = rs.getInt("address_id");
+		DBConnection.dbClose();
+		return addressId;
 	}
 }

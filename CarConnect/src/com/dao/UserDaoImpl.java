@@ -1,3 +1,5 @@
+// Author : Anirudh Suryawanshi
+
 package com.dao;
 
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.util.List;
 import com.dto.UserCountByRoleDto;
 import com.dto.UserReservationHistoryDto;
 import com.dto.UserTotalReservationsByStatusDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.User;
 import com.utility.DBConnection;
@@ -16,7 +19,7 @@ import com.utility.DBConnection;
 public class UserDaoImpl implements UserDao {
 
 	@Override
-	public int save(User user) throws SQLException {
+	public int save(User user) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "insert into user (user_id, user_username, user_password, user_role) " + "values (?,?,?,?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -30,7 +33,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void deleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void deleteById(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "delete from user where user_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -40,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update user set isActive='no' where user_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -50,7 +53,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int update(User user) throws SQLException, ResourceNotFoundException {
+	public int update(User user) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update user set user_username=?, user_password=?, user_role=? " + "where user_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -64,7 +67,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<User> findALL() throws SQLException {
+	public List<User> findALL() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from user where isActive='Yes'";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -83,7 +86,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean findOne(int id) throws SQLException, ResourceNotFoundException {
+	public boolean findOne(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select user_id from user where user_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -95,7 +98,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserCountByRoleDto> getUserCountByRole() throws SQLException, ResourceNotFoundException {
+	public List<UserCountByRoleDto> getUserCountByRole() throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select user_role,count(user_id) as number_of_users from user group by user_role";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -113,7 +116,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<UserTotalReservationsByStatusDto> getUserTotalReservationsByStatus()
-			throws SQLException, ResourceNotFoundException {
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "SELECT u.user_id, r.reservation_status, COUNT(*) AS reservation_status_count "
 				+ "FROM Reservation r JOIN Customer c ON r.customer_id = c.customer_id "
@@ -134,7 +137,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserReservationHistoryDto> getUserReservationHistory() throws SQLException, ResourceNotFoundException {
+	public List<UserReservationHistoryDto> getUserReservationHistory() throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "SELECT u.user_id, r.reservation_id, r.reservation_start_date, "
 				+ "r.reservation_end_date, v.vehicle_make, v.vehicle_model "
@@ -157,5 +160,4 @@ public class UserDaoImpl implements UserDao {
 		DBConnection.dbClose();
 		return list;
 	}
-
 }

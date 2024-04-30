@@ -1,3 +1,5 @@
+// Author : Anirudh Suryawanshi
+
 package com.test;
 
 import java.sql.SQLException;
@@ -7,6 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import com.dto.UserCountByRoleDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.service.UserService;
 
@@ -26,7 +29,7 @@ public class UserServiceTest {
 		try {
 			actualList = userService.getUserCountByRole();
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException | ResourceNotFoundException e) {
+		} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 2-------------
@@ -36,7 +39,7 @@ public class UserServiceTest {
 			actualList = userService.getUserCountByRole();
 			actualList.remove(0);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException | ResourceNotFoundException e) {
+		} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 3-------------
@@ -46,7 +49,7 @@ public class UserServiceTest {
 			actualList = userService.getUserCountByRole();
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException | ResourceNotFoundException e) {
+		} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 		}
 
 		// -------------Use Case 4-------------
@@ -57,7 +60,7 @@ public class UserServiceTest {
 			actualList.remove(0);
 			actualList.remove(actualList.size() - 1);
 			Assert.assertEquals(expectedList, actualList);
-		} catch (SQLException | ResourceNotFoundException e) {
+		} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 		}
 	}
 }
