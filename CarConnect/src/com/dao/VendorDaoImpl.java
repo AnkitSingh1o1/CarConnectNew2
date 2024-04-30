@@ -1,3 +1,5 @@
+// Author: Ankit Singh
+
 package com.dao;
 
 import java.sql.Connection;
@@ -5,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.dto.VendorAndCount;
@@ -197,6 +200,8 @@ public class VendorDaoImpl implements VendorDao{
 		
 		ResultSet rst = pstmt.executeQuery();
 		List<VendorAndCount> list = new ArrayList<>();
+		Collections.sort(list, new VendorAndCountSortDesc());
+		
 		while(rst.next()) {
 			String fName = rst.getString("vendor_first_name");
 			String lName = rst.getString("vendor_last_name");
