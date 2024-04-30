@@ -6,8 +6,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
+import com.exception.ReservationException;
 import com.exception.ResourceNotFoundException;
+import com.exception.VehicleNotFoundException;
 import com.model.Reservation;
 import com.model.Review;
 import com.model.Vehicle;
@@ -22,8 +25,8 @@ public class VendorController {
 	public static void main(String[] args) {
 		
 		//extract vendorId
-		//int vendorId = Integer.parseInt(args[0]);
-		int vendorId = 6;
+		int vendorId = Integer.parseInt(args[0]);
+		//int vendorId = 6;
 		
 		Scanner sc = new Scanner(System.in);
 		VehicleService vehicleService = new VehicleService();
@@ -131,11 +134,10 @@ public class VendorController {
 					List<Reservation> list = null;
 					try {
 						list = reservationService.vendorFindAllReservationsByStatus(vendorId, "Pending");
-					} catch (ResourceNotFoundException e) {
-						System.out.println("findAllReservationsByStatus: "+e.getMessage());
-					} catch (SQLException e) {
+					} catch (SQLException | ReservationException | DatabaseConnectionException  e) {
 						System.out.println("findAllReservationsByStatus: "+e.getMessage());
 					}
+					
 					if(list == null || list.size() == 0)
 						System.out.println("Sorry, you do not have any reservation.");
 					else {
@@ -173,9 +175,7 @@ public class VendorController {
 							//send that object to method
 							try {
 								reservationService.update(reservationId, updatedReservation);
-							} catch (SQLException e) {
-								System.out.println(e.getMessage());
-							} catch (ResourceNotFoundException e) {
+							}catch (SQLException | ReservationException | DatabaseConnectionException e) {
 								System.out.println(e.getMessage());
 							}
 							break;
@@ -194,9 +194,7 @@ public class VendorController {
 					List<Reservation> list1 = null;
 					try {
 						list1 = reservationService.vendorFindAllReservationsByStatus(vendorId, "Due");
-					} catch (ResourceNotFoundException e) {
-						System.out.println("findAllReservationsByStatus: "+e.getMessage());
-					} catch (SQLException e) {
+					} catch (SQLException | ReservationException | DatabaseConnectionException e) {
 						System.out.println("findAllReservationsByStatus: "+e.getMessage());
 					}
 					
@@ -240,9 +238,7 @@ public class VendorController {
 					else
 						System.out.println("Vehicle not returned");
 
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (SQLException | ReservationException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				
@@ -278,9 +274,7 @@ public class VendorController {
 						int id1 = sc.nextInt();
 						vehicleService.deleteByid(id1);
 						System.out.println("Vehicle deleted sucessfully!!");
-					} catch (InvalidInputException e) {
-						System.out.println(e.getMessage());
-					} catch (SQLException e) {
+					} catch (SQLException | VehicleNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
 					
@@ -339,11 +333,9 @@ public class VendorController {
 		VendorService vendorService = new VendorService();
 		try {
 			String vendorId = vendorService.getVendorIdByUsernamePassword(username, password);
-			String[] sarr = { vendorId };
+			String[] sarr = { ""+vendorId };
 			main(sarr);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+		} catch (SQLException | DatabaseConnectionException | ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	}

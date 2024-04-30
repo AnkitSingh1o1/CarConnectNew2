@@ -1,3 +1,5 @@
+// Author: Ankit Singh
+
 package com.dao;
 
 import java.sql.Connection;
@@ -8,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dto.ReservationPerCustomer;
-import com.exception.ResourceNotFoundException;
+import com.exception.DatabaseConnectionException;
+import com.exception.ReservationException;
 import com.model.Reservation;
 import com.utility.DBConnection;
 
 public class ReservationDaoImpl implements ReservationDao {
 
+	
+	
 	@Override
-	public int save(Reservation reservation) throws SQLException {
+	public int save(Reservation reservation) throws SQLException, ReservationException, DatabaseConnectionException {
 
 		// open connection
 		Connection con = DBConnection.dbConnect();
@@ -46,8 +51,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return status;
 	}
 
+	
 	@Override
-	public int deleteById(int id) throws SQLException, ResourceNotFoundException {
+	public int deleteById(int id) throws SQLException, DatabaseConnectionException, ReservationException {
 		// open db connection
 		Connection con = DBConnection.dbConnect();
 
@@ -65,8 +71,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return status;
 	}
 
+	
 	@Override
-	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void softDeleteById(int id) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "update reservation set reservation_isActive='no' where reservation_id = ?";
 
@@ -80,9 +87,10 @@ public class ReservationDaoImpl implements ReservationDao {
 		// close db connection
 		DBConnection.dbClose();
 	}
+	
 
 	@Override
-	public int update(int id, Reservation updatedReservation) throws SQLException, ResourceNotFoundException {
+	public int update(int id, Reservation updatedReservation) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "update reservation " + "set customer_id = ?, " + "vehicle_id = ?, "
 				+ "reservation_start_date = ?, " + "reservation_end_date = ?, " + "reservation_total_cost = ?, "
@@ -104,8 +112,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return status;
 	}
 
+	
 	@Override
-	public List<Reservation> findAll() throws SQLException {
+	public List<Reservation> findAll() throws SQLException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from reservation";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -127,9 +136,10 @@ public class ReservationDaoImpl implements ReservationDao {
 		DBConnection.dbClose();
 		return list;
 	}
+	
 
 	@Override
-	public Boolean findOne(int id) throws SQLException {
+	public Boolean findOne(int id) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "select reservation_id from reservation where reservation_id = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -142,7 +152,7 @@ public class ReservationDaoImpl implements ReservationDao {
 
 	
 	@Override
-	public List<Reservation> findAllReservationsById(int id) throws SQLException, ResourceNotFoundException {
+	public List<Reservation> findAllReservationsById(int id) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "select r.* from customer c JOIN reservation r ON " + "c.customer_id=r.customer_id "
 				+ "where c.customer_id=?";
@@ -168,7 +178,7 @@ public class ReservationDaoImpl implements ReservationDao {
 
 
 	@Override
-	public List<ReservationPerCustomer> getReservationCountPerCustomer() throws SQLException {
+	public List<ReservationPerCustomer> getReservationCountPerCustomer() throws SQLException, DatabaseConnectionException{
 
 		Connection con = DBConnection.dbConnect();
 		String sql = "select customer_first_name, customer_last_name, count(*) as ReservationCount"
@@ -197,10 +207,11 @@ public class ReservationDaoImpl implements ReservationDao {
 
 		return list;
 	}
+	
 
 	@Override
 	public List<Reservation> customerFindAllReservationsByStatus(int id, String status) //confirmed or pending
-			throws SQLException, ResourceNotFoundException {
+			 throws SQLException, ReservationException, DatabaseConnectionException{
 
 		Connection con = DBConnection.dbConnect();
 
@@ -231,9 +242,50 @@ public class ReservationDaoImpl implements ReservationDao {
 		return list;
 	}
 
+	
+//	public List<Reservation> findAllReservationsByStatus(int id, String status)
+//			 throws SQLException, ReservationException, DatabaseConnectionException, ResourceNotFoundException{
+//
+//		Connection con = DBConnection.dbConnect();
+//		CustomerDaoImpl cDao = new CustomerDaoImpl();
+//		
+//		String sql = null;
+//		if(cDao.findOne(id)) {  //confirmed or pending
+//			sql =  "select r.* from customer c JOIN reservation r ON"
+//					+ "c.customer_id=r.customer_id"
+//					+ "where c.customer_id=? AND r.reservation_status=?"; 
+//		}
+//		else {  //pending or Due
+//			sql =  "select r.*" + "from reservation r join vehicle v on r.vehicle_id = v.vehicle_id"
+//					+ "join vendor vd on vd.vendor_id = v.vendor_id" 
+//					+ "where v.vendor_id = ? AND r.reservation_status = ?";
+//		}
+//	
+//		PreparedStatement pstmt = con.prepareStatement(sql);
+//		pstmt.setInt(1, id);
+//		pstmt.setString(2, status);
+//
+//		ResultSet rst = pstmt.executeQuery();
+//		List<Reservation> list = new ArrayList<>();
+//		while (rst.next()) {
+//			int id1 = rst.getInt("reservation_id");
+//			String startDate = rst.getString("reservation_start_date");
+//			String endDate = rst.getString("reservation_end_date");
+//			double totalCost = rst.getDouble("reservation_total_cost");
+//			String status1 = rst.getString("reservation_status");
+//			int cId = rst.getInt("customer_id");
+//			int vId = rst.getInt("vehicle_id");
+//			int aId = rst.getInt("admin_id");
+//			Reservation reservation = new Reservation(cId, vId, id1, startDate, endDate, totalCost, status1, aId);
+//			list.add(reservation);
+//		}
+//		DBConnection.dbClose();
+//		return list;
+//	}
+	
 	@Override
 	public List<Reservation> vendorFindAllReservationsByStatus(int id, String status) //pending or Due
-			throws SQLException, ResourceNotFoundException {
+			 throws SQLException, ReservationException, DatabaseConnectionException{
 		
 		Connection con = DBConnection.dbConnect();
 
@@ -265,8 +317,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return list;
 	}
 
+	
 	@Override
-	public Reservation getReservatonById(int reservationId) throws SQLException {
+	public Reservation getReservatonById(int reservationId) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from reservation where reservation_id = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -284,6 +337,30 @@ public class ReservationDaoImpl implements ReservationDao {
 		Reservation reservation = new Reservation(cId, vId, id, startDate, endDate, totalCost, status, aId);
 	
 		return reservation;
+	}
+
+
+	@Override
+	public boolean ifVehicleIsAvailableForReservation(int id) 
+			throws SQLException, ReservationException, DatabaseConnectionException {
+		
+		Connection con = DBConnection.dbConnect();
+		String sql = "select vehicle_id "
+				+ "from reservation "
+				+ "where reservation_status = 'pending' OR  reservation_status = 'completed'";
+		
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		ResultSet rst = pstmt.executeQuery(sql);
+		
+		List<Integer> list = new ArrayList<>();
+		while(rst.next()) {
+			list.add(rst.getInt("vehicle_id"));
+		}
+		
+		if(!list.contains(id))
+			return true;
+		
+		return false;
 	}
 
 }

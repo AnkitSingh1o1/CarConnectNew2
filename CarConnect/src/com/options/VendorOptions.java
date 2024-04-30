@@ -1,3 +1,5 @@
+// Author: Ankit Singh
+
 package com.options;
 
 import java.sql.SQLException;
@@ -5,13 +7,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.controller.AdminController;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
-import com.model.Customer;
+import com.model.Address;
 import com.model.User;
 import com.model.Vendor;
 import com.service.UserService;
 import com.service.VendorService;
 import com.utility.RandomId;
+import com.service.AddressService;
 
 public class VendorOptions {
 public static void main(String[] args) {
@@ -78,9 +82,9 @@ public static void main(String[] args) {
 				
 				int uStatus = userService.insert(newUser);
 				
-				Address newAdd = new Address(addressId, state, city, pincode);
+				Address newAdd = new Address(addressId, state, city, ""+pincode);
 				
-				int aStatus = userService.save(newAdd);
+				int aStatus = addressService.save(newAdd);
 				
 				Vendor vendor = new Vendor(vendorId, firstName, lastName, email, phoneNo, registrationDate, userId,
 						addressId);
@@ -90,20 +94,22 @@ public static void main(String[] args) {
 					System.out.println("Vendor added successfully. Try loging in. Thank you!!!");
 				else
 					System.out.println("Record not added");
-			} catch (SQLException e) {
+			} catch (SQLException | DatabaseConnectionException e) {
 				System.out.println(e.getMessage());
-			}
+			} 
+			
 			break;
 
 			case 2:
-				List<Vendor> list;
+				List<Vendor> list = null;
 				try {
 					list = vendorService.findAll();
 					for (Vendor a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
+				
 				System.out.print("Choose vendor id from above: ");
 				int id = sc.nextInt();
 				sc.nextLine();
@@ -139,21 +145,16 @@ public static void main(String[] args) {
 						System.out.println("Record updated successfully");
 					else
 						System.out.println("Record not updated");
-				} catch (SQLException e) {
-					System.out.println("Error in DB" + e.getMessage());
-				} catch (ResourceNotFoundException e) {
-					System.out.println("Data not present in DB" + e.getMessage());
+				} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
 				}
-				break;
 				
 			case 3:
 				System.out.print("Enter vendor id : ");
 				try {
 					vendorService.deleteById(sc.nextInt());
 					System.out.println("Record deleted successfully");
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -163,9 +164,7 @@ public static void main(String[] args) {
 				try {
 					vendorService.softDeleteById(sc.nextInt());
 					System.out.println("Record de-activated successfully");
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (SQLException | ResourceNotFoundException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -175,7 +174,7 @@ public static void main(String[] args) {
 					list = vendorService.findAll();
 					for (Vendor a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -183,7 +182,7 @@ public static void main(String[] args) {
 			}
 		}
 
-	}
+}
 
 public static void vendorOptions() {
 	String[] args = { "" };

@@ -1,11 +1,17 @@
+// Author: Ankit Singh
+
 package com.controller;
 
 
 import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
+import com.exception.ReservationException;
+import com.exception.VehicleNotFoundException;
 import com.model.Reservation;
 import com.service.ReservationService;
 import com.service.VehicleService;
@@ -61,7 +67,7 @@ public class ReservationController {
         double totalCost = 0;
 		try {
 			totalCost = reservationService.getTotalCost(vehicleId, startDate, endDate);
-		} catch (SQLException | InvalidInputException e) {
+		} catch (SQLException | InvalidInputException | DateTimeParseException | NullPointerException | VehicleNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
         
@@ -92,7 +98,7 @@ public class ReservationController {
 			else
 				System.out.println("Reservation failed");
 			
-		} catch (SQLException e) {
+		} catch (SQLException | ReservationException | DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
 		}
 		

@@ -1,3 +1,5 @@
+// Author: Ankit Singh
+
 package com.test;
 
 import java.sql.SQLException;
@@ -7,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.service.ReservationService;
 
 
@@ -14,8 +17,9 @@ public class ReservationServiceTest {
 
 	
 	@Test
-	public void getTotalCost() {
-		
+	public void getTotalCost() 
+			throws SQLException, NullPointerException,
+	InvalidInputException, DateTimeParseException, VehicleNotFoundException{
 		
 		//Use Case 1: Ideal case
 		//Prepare the inputs
@@ -31,6 +35,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		
 		
@@ -47,7 +53,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
-		catch (DateTimeParseException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		
 		//Use Case 3: Invalid date input format
@@ -63,7 +70,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
-		catch (DateTimeParseException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		//Use Case 4: Invalid date input format
 		//Prepare the inputs
@@ -78,7 +86,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
-		catch (DateTimeParseException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		//Use Case 5: Invalid input format
 		//Prepare the inputs
@@ -93,7 +102,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
-		catch (DateTimeParseException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		//Use Case 6: Invalid input format
 		//Prepare the inputs
@@ -108,7 +118,8 @@ public class ReservationServiceTest {
 			double grade = reservationService.getTotalCost(vehicleId, startDate, endDate);
 			Assert.assertEquals(expectedResult, actualResult, grade);
 		} catch (SQLException e) { } catch (InvalidInputException e) { }
-		catch (DateTimeParseException e) { }
+		catch (NullPointerException e) { }  catch (DateTimeParseException e) { } 
+		catch (VehicleNotFoundException e) { }
 		
 		
 	}

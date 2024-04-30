@@ -1,3 +1,5 @@
+// Author: Ankit Singh
+
 package com.dao;
 
 import java.sql.Connection;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dto.VendorAndCount;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.Vendor;
 import com.utility.DBConnection;
@@ -16,7 +19,7 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public int save(Vendor vendor) throws SQLException {
+	public int save(Vendor vendor) throws SQLException, DatabaseConnectionException {
 		
 		//open connection
 		Connection con = DBConnection.dbConnect();
@@ -50,7 +53,8 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public int deleteById(int id) throws SQLException, ResourceNotFoundException {
+	public int deleteById(int id)
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		
 		//open db connection
 		Connection con = DBConnection.dbConnect();
@@ -71,7 +75,8 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public int update(int id, Vendor updatedVendor) throws SQLException, ResourceNotFoundException {
+	public int update(int id, Vendor updatedVendor) 
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update vendor"
 				+ "set vendor_id = ?, "
@@ -103,7 +108,7 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public List<Vendor> findAll() throws SQLException {
+	public List<Vendor> findAll() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from vendor";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -128,7 +133,7 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public Boolean findOne(int id) throws SQLException {
+	public Boolean findOne(int id) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select vendor_id from vendor where vendor_id = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -141,7 +146,8 @@ public class VendorDaoImpl implements VendorDao{
 
 	
 	@Override
-	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void softDeleteById(int id) 
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "update vendor set vendor_isActive='no' where vendor_id = ?";
 		
@@ -161,7 +167,7 @@ public class VendorDaoImpl implements VendorDao{
 	
 
 	@Override
-	public List<Vendor> findAllActiveVendor() throws SQLException {
+	public List<Vendor> findAllActiveVendor() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select * from vendor where vendor_isActive = 'yes'";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -186,7 +192,8 @@ public class VendorDaoImpl implements VendorDao{
 
 
 	@Override
-	public List<VendorAndCount> countVendorVehicle() throws SQLException {
+	public List<VendorAndCount> countVendorVehicle()
+			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select vendor_first_name, vendor_last_name, count(*) as VehicleCount"
 				+ "from vendor vd left join vehicle v on vd.vendor_id = v.vendor_id"
@@ -211,7 +218,8 @@ public class VendorDaoImpl implements VendorDao{
 
 
 	@Override
-	public List<VendorAndCount> vendorWithGoodReviewCount() throws SQLException {
+	public List<VendorAndCount> vendorWithGoodReviewCount() 
+			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select vendor_first_name, vendor_last_name, count(*) as Above3StarReviewCount"
 				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id"
@@ -239,7 +247,8 @@ public class VendorDaoImpl implements VendorDao{
 
 
 	@Override
-	public List<VendorAndCount> vendorWithBadReviewCount() throws SQLException {
+	public List<VendorAndCount> vendorWithBadReviewCount() 
+			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select vendor_first_name, vendor_last_name, count(*) as Below3StarReviewCount"
 				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id"
@@ -267,7 +276,8 @@ public class VendorDaoImpl implements VendorDao{
 
 
 	@Override
-	public String getVendorIdByUsernamePassword(String username, String password) throws SQLException, ResourceNotFoundException {
+	public String getVendorIdByUsernamePassword(String username, String password) 
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		
 		Connection con = DBConnection.dbConnect();
 		String sql = "select v.vendor_id"
