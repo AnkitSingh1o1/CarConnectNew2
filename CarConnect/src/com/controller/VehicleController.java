@@ -1,3 +1,5 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.controller;
 
 import java.sql.SQLException;
@@ -5,9 +7,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.dao.VehicleDaoImpl;
 import com.dto.VehicleDto;
 import com.exception.InvalidInputException;
-
+import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
 import com.service.VehicleService;
 
@@ -27,6 +30,7 @@ public class VehicleController {
 			System.out.println("Press 7. Display Vendor's Vehicle");
 			System.out.println("Press 8. Get Vehicle's Daily Rate");
 			System.out.println("Press 9. Get Vehicle's Age");
+			System.out.println("Press 10. Get Vehicles In Sorted Order Of Daily Rate");
 			System.out.println("Press 0. To Exit");
 			int input=sc.nextInt();
 			if(input==0)
@@ -57,13 +61,12 @@ public class VehicleController {
 				Double vehicle_daily_rate=sc.nextDouble();
 				List<Vehicle> list;
 				try {
-					list = vehicleService.findAll();
+					list = vehicleService.DisplayAll();
 					for(Vehicle v : list) {
 						System.out.println(v);
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println(e1.getMessage());
 				}
 				
 				System.out.println("Enter Vendor ID");
@@ -87,7 +90,7 @@ public class VehicleController {
 			case 2:
 				List<Vehicle> list1;
 				try {
-					list1 = vehicleService.findAll();
+					list1 = vehicleService.DisplayAll();
 					for(Vehicle v:list1) {
 						System.out.println(v);
 					}
@@ -103,7 +106,7 @@ public class VehicleController {
 					System.out.println("Artist record deleted..");
 				} catch (SQLException e) {
 					 System.out.println(e.getMessage());
-				} catch (InvalidInputException e) {
+				} catch (VehicleNotFoundException e) {
 					 System.out.println(e.getMessage());
 				}				
 				break; 
@@ -148,7 +151,7 @@ public class VehicleController {
 			case 7:
 				try {
 					//display all artists 
-					List<Vehicle> list111 = vehicleService.findAll();
+					List<Vehicle> list111 = vehicleService.DisplayAll();
 					for(Vehicle v : list111) {
 						System.out.println(v);
 					}
@@ -167,7 +170,7 @@ public class VehicleController {
 				break; 
 			case 8:
 				try {
-				List<Vehicle> list111 = vehicleService.findAll();
+				List<Vehicle> list111 = vehicleService.DisplayAll();
 				for(Vehicle v : list111) {
 					System.out.println(v);
 				}
@@ -178,7 +181,7 @@ public class VehicleController {
 				catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}	
-				catch (InvalidInputException e) {
+				catch (VehicleNotFoundException e) {
 					System.out.println(e.getMessage());
 				}	
 				break;
@@ -190,10 +193,23 @@ public class VehicleController {
 					
 						age = vehicleService.getVehicleAge(vehicle_id1);
 						System.out.println(age);
-					} catch (SQLException|InvalidInputException e) {
+					} catch (SQLException|VehicleNotFoundException e) {
 						System.out.println(e.getMessage());
 					}
 					
+             case 10:
+			    try {
+					List<Vehicle>list2 =new VehicleDaoImpl().findAll();
+					System.out.println("Enter the Sorting Order");
+					sc.nextLine();
+					String sortOrder=sc.nextLine();
+					list2=vehicleService.sortVehicleByDailyRate(list2, sortOrder);
+					for(Vehicle v:list2) {
+						System.out.println(v);
+					}
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
 				 
 			}
 		}

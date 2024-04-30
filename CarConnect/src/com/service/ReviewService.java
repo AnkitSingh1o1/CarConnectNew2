@@ -1,13 +1,19 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.service;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import com.dao.ReviewDao;
 import com.dao.ReviewDaoImpl;
 import com.dto.ReviewDto;
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.model.Review;
+import com.utility.AscSortOfReviewByRating;
+import com.utility.DescSortOfReviewByRating;
 
 public class ReviewService {
    ReviewDao dao=new ReviewDaoImpl();
@@ -16,7 +22,7 @@ public class ReviewService {
 		
 	}
 	
-	public List<Review> findAll() throws SQLException {
+	public List<Review> DisplayAll() throws SQLException {
 	
 		return dao.findAll();
 	}
@@ -40,10 +46,10 @@ public class ReviewService {
 		
 	}
 
-	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException, InvalidInputException{
+	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException, VehicleNotFoundException{
 		boolean isvendor_idValid = dao.findVehicle(vehicle_id);
 		if(!isvendor_idValid)
-			throw new InvalidInputException("Invalid Vehicle Id");
+			throw new VehicleNotFoundException("Invalid Vehicle Id");
 	
           return dao.getReviewsByVehicleId(vehicle_id);
 	}
@@ -52,7 +58,24 @@ public class ReviewService {
 		return dao.getReviewStats();
 	}
 
-	
-	
 
+
+public List<Review> sortReviewByRating(List<Review> list, String sortDirection){
+	 
+	if(sortDirection.equalsIgnoreCase("ASC")) {
+		Collections.sort(list,new AscSortOfReviewByRating());
+	}
+	else
+	if(sortDirection.equalsIgnoreCase("DESC")) {
+		Collections.sort(list,new DescSortOfReviewByRating());
+	}
+	return list;
 }
+	
+}
+
+
+
+
+
+

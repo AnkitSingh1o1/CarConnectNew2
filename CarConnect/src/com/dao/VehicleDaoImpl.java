@@ -1,3 +1,5 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.dao;
 
 import java.sql.*;
@@ -7,6 +9,7 @@ import java.util.List;
 
 import com.dto.VehicleDto;
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
 import com.utility.DBConnection;
 
@@ -61,7 +64,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public void deleteById(int vehicleId) throws SQLException, InvalidInputException {
+	public void deleteById(int vehicleId) throws SQLException, VehicleNotFoundException {
 		Connection con = DBConnection.dbConnect();
 		String sql="delete from vehicle where vehicle_id =?";
 		//prepare the statement 
@@ -175,7 +178,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public double getDailyRate(int vehicleId) throws SQLException, InvalidInputException {
+	public double getDailyRate(int vehicleId) throws SQLException, VehicleNotFoundException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select vehicle_daily_rate from vehicle where vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -187,13 +190,13 @@ public class VehicleDaoImpl implements VehicleDao {
 			DBConnection.dbClose();	
 		return vehicleDailyRate;}
 		else {
-			throw new InvalidInputException("vehicle Id is not valid");
+			throw new VehicleNotFoundException("vehicle Id is not valid");
 		}
 		
 	}
 
 	@Override
-	public int getVehicleYear(int vehicleId) throws SQLException, InvalidInputException {
+	public int getVehicleYear(int vehicleId) throws SQLException, VehicleNotFoundException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select vehicle_year from vehicle where vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -205,7 +208,7 @@ public class VehicleDaoImpl implements VehicleDao {
 			DBConnection.dbClose();	
 		return vehicle_year;}
 		else {
-			throw new InvalidInputException("vehicle Id is not valid");
+			throw new VehicleNotFoundException("vehicle Id is not valid");
 		}
 	}
 

@@ -1,3 +1,5 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.dao;
 
 import java.sql.SQLException;
@@ -5,6 +7,7 @@ import java.util.List;
 
 import com.dto.ReviewDto;
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.model.Review;
 
 
@@ -13,8 +16,8 @@ public interface ReviewDao {
       List<Review> findAll() throws SQLException;
       void deleteById(int id) throws SQLException,InvalidInputException;
 	boolean findOne(int customerId) throws SQLException;
-	List<Review> getReviewsByVendorId(int vendor_id) throws SQLException;
-	List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException;
+	List<Review> getReviewsByVendorId(int vendor_id) throws SQLException,InvalidInputException;
+	List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException,VehicleNotFoundException;
 	List<ReviewDto> getReviewStats() throws SQLException;
 	boolean findVehicle(int vehicleId) throws SQLException;
 	boolean findVendor(int vendorId) throws SQLException;

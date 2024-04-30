@@ -1,3 +1,5 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.dao;
 
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import com.dto.ReviewDto;
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.model.Review;
 import com.utility.DBConnection;
 
@@ -104,7 +107,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException {
+	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException,VehicleNotFoundException {
 		Connection con = DBConnection.dbConnect();
 		String sql=" select r.* from review r join vehicle v on r.vehicle_id=v.vehicle_id where v.vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);

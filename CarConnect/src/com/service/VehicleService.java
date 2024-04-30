@@ -1,16 +1,19 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.service;
-import java.time.Year;
-
-
 import java.sql.SQLException;
+import java.time.Year;
+import java.util.Collections;
 import java.util.List;
 
 import com.dao.VehicleDao;
 import com.dao.VehicleDaoImpl;
 import com.dto.VehicleDto;
 import com.exception.InvalidInputException;
-
+import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
+import com.utility.AscSortOfVehicleByDailyRate;
+import com.utility.DescSortOfVehicleByDailyRate;
 
 
 public class VehicleService {
@@ -19,14 +22,14 @@ public class VehicleService {
 		return dao.addVehicle(vehicle);
 		
 	}
-	public List<Vehicle> findAll() throws SQLException {
+	public List<Vehicle> DisplayAll() throws SQLException {
 		return dao.findAll();
 		
 	}
-	public void deleteByid(int id) throws InvalidInputException, SQLException {
+	public void deleteByid(int id) throws VehicleNotFoundException, SQLException {
 		boolean isIdValid = dao.findOne(id);
 		if(!isIdValid)
-			throw new InvalidInputException("Id given is Invalid!!");
+			throw new VehicleNotFoundException("Id given is Invalid!!");
 		 
 		dao.deleteById(id);
 		
@@ -50,26 +53,39 @@ public class VehicleService {
 		// TODO Auto-generated method stub
 		return dao.findMyVehicles(vendorId);
 	}
-	public double getDailyRate(int vehicleId) throws SQLException, InvalidInputException {
+	public double getDailyRate(int vehicleId) throws SQLException, VehicleNotFoundException {
 		
 		return dao.getDailyRate(vehicleId);
 	}
 	
-	public int getVehicleAge(int vehicle_id) throws SQLException, InvalidInputException{
+	public int getVehicleAge(int vehicle_id) throws SQLException, VehicleNotFoundException{
 	
 		VehicleDaoImpl vehicleDaoImpl=new VehicleDaoImpl();
 		 int currentYear = Year.now().getValue();
 		int age=currentYear-vehicleDaoImpl.getVehicleYear(vehicle_id);
 		if(age<0) {
-			throw new InvalidInputException("Vehicle Id is Invalid, Try Again!");
+			throw new VehicleNotFoundException("Vehicle Id is Invalid, Try Again!");
 		}
 		if(age>20) {
-			throw new InvalidInputException("Vehicle Id is Invalid, Try Again!");
+			throw new VehicleNotFoundException("Vehicle Id is Invalid, Try Again!");
 		}
 			
 		return age;
-		
-		
-	}
+		}
 
+	public List<Vehicle> sortVehicleByDailyRate(List<Vehicle> list, String sortDirection){
+		 
+		if(sortDirection.equalsIgnoreCase("ASC")) {
+			Collections.sort(list, new AscSortOfVehicleByDailyRate());
+		}
+		else
+		if(sortDirection.equalsIgnoreCase("DESC")) {
+			Collections.sort(list, new DescSortOfVehicleByDailyRate());
+		}
+		return list;
+	}
+		
 }
+
+
+	
