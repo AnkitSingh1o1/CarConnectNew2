@@ -1,8 +1,10 @@
-🚗 **Car Connect** 🚗
+🚗 Car Connect 🚗
+
 
 🌟 Overview
 
 Car Connect is a platform that facilitates seamless car rental experiences by connecting users with car vendors who list their vehicles for rent. Whether you're planning a road trip, need a temporary ride for your commute, or simply want to test drive a different car, Car Connect has got you covered.
+
 
 💡 Features
 
@@ -26,7 +28,12 @@ Enjoy Your Ride: Pick up the car from the vendor at the designated location, and
 
 Leave a Review: After your rental period ends, share your experience by leaving a review. Your feedback helps other users make informed decisions.
 
+
+
 🛠️ Technologies Used
+
+
+
 
 
 🤝 Contributing
@@ -45,3 +52,5 @@ Create a pull request.
 
 
 Happy Renting! 🚗✨
+
+
