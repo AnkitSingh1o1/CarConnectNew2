@@ -1,3 +1,5 @@
+/*Author :AKSHAY PAWAR*/
+
 package com.controller;
 
 import java.sql.SQLException;
@@ -5,10 +7,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.dao.ReviewDaoImpl;
 import com.dto.ReviewDto;
 import com.exception.InvalidInputException;
+import com.exception.VehicleNotFoundException;
 import com.model.Review;
-
 import com.service.ReviewService;
 
 public class ReviewController {
@@ -24,6 +27,7 @@ public class ReviewController {
 		System.out.println("Press 4. Display reviews for vendor Id");
 		System.out.println("Press 5. Display reviews for vehicle Id");
 		System.out.println("Press 6. Display Review Stats");
+		System.out.println("Press 7. Display Review By Rating Order");
 		System.out.println("Press 0. To Exit");
 		int input=sc.nextInt();
 		if(input==0)
@@ -60,7 +64,6 @@ public class ReviewController {
 				else
 					System.out.println("Adding operation failed");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
 			}
 			break;
@@ -69,7 +72,7 @@ public class ReviewController {
 			 
 			try {
 			
-			 List<Review> list = reviewService.findAll();
+			 List<Review> list = reviewService.DisplayAll();
 				for(Review r: list) {
 					System.out.println(r);}
 			} catch (SQLException e) {
@@ -113,7 +116,7 @@ public class ReviewController {
            break;
 		case 5:
 			try {
-			List<Review> list = reviewService.findAll();
+			List<Review> list = reviewService.DisplayAll();
 			for(Review a : list) {
 				System.out.println(a);
 			}
@@ -126,7 +129,7 @@ public class ReviewController {
 			for(Review r : listReview) {
 				System.out.println(r);
 			}}
-			catch (InvalidInputException e) {
+			catch (VehicleNotFoundException e) {
 				System.out.println(e.getMessage());
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -147,6 +150,20 @@ public class ReviewController {
 				System.out.println(e.getMessage());
 			}	
 			break; 
+		case 7:
+			try {
+				List<Review>list2 =new ReviewDaoImpl().findAll();
+				System.out.println("Enter the Sorting Order");
+				sc.nextLine();
+				String sortOrder=sc.nextLine();
+				list2=reviewService.sortReviewByRating(list2, sortOrder);
+				for(Review v:list2) {
+					System.out.println(v);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 			
 		}
