@@ -1,23 +1,26 @@
+// Author : Anirudh Suryawanshi
+
 package com.options;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
 import com.controller.AdminController;
 import com.dto.CustomerReservationDetailsDto;
 import com.dto.CustomersWithReservationsDto;
 import com.dto.CustomersWithTotalSpentDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
+import com.model.Address;
 import com.model.Customer;
-import com.model.User;
+import com.service.AddressService;
 import com.service.CustomerService;
-import com.service.UserService;
 
 public class CustomerOptions {
 	public static void main(String[] args) {
 		CustomerService customerService = new CustomerService();
-		UserService userService = new UserService();
+		AddressService addressService = new AddressService();
 		Scanner sc = new Scanner(System.in);
 
 		while (true) {
@@ -92,49 +95,52 @@ public class CustomerOptions {
 					list = customerService.findAll();
 					for (Customer a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
-				System.out.print("Choose customer id from above: ");
-				int id = sc.nextInt();
-				sc.nextLine();
-				System.out.print("Enter first name : ");
-				String firstName = sc.nextLine();
-				System.out.print("Enter last name : ");
-				String lastName = sc.nextLine();
-				System.out.print("Enter email : ");
-				String email = sc.nextLine();
-				System.out.print("Enter phone no. : ");
-				String phoneNo = sc.nextLine();
-				System.out.print("Enter phone Registration Date : ");
-				String registrationDate = sc.nextLine();
-
 				try {
-					List<User> list1 = userService.findAll();
-					for (User a : list1)
-						System.out.println(a);
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-				System.out.print("Choose user id from above : ");
-				int userId = sc.nextInt();
+					System.out.print("Choose customer id from above: ");
+					int customerid = sc.nextInt();
+					sc.nextLine();
+					System.out.print("Enter first name : ");
+					String firstName = sc.nextLine();
+					System.out.print("Enter last name : ");
+					String lastName = sc.nextLine();
+					System.out.print("Enter email : ");
+					String email = sc.nextLine();
+					System.out.print("Enter phone no. : ");
+					String phoneNo = sc.nextLine();
+					System.out.print("Enter phone Registration Date : ");
+					String registrationDate = sc.nextLine();
 
-				System.out.print("Enter address id : ");
-				int addressId = sc.nextInt();
+					int userId = customerService.getUserIdByCustomerId(customerid);
+					int addressId = customerService.getAddressIdByCustomerId(customerid);
 
-				Customer customer = new Customer(id, firstName, lastName, email, phoneNo, 
-						registrationDate, userId,
-						addressId);
-				try {
+					System.out.print("Enter your State : ");
+					String state = sc.nextLine();
+					System.out.print("Enter your city : ");
+					String city = sc.nextLine();
+					System.out.print("Enter your Pincode : ");
+					String pincode = sc.nextLine();
+
+					Address address = new Address(addressId, state, city, pincode);
+					Customer customer = new Customer(customerid, firstName, lastName, email, phoneNo, registrationDate,
+							userId, addressId);
+
 					int status = customerService.update(customer);
-					if (status == 1)
+					int addressStatus = addressService.updateById(address);
+					if (status == 1 && addressStatus == 1)
 						System.out.println("Record updated successfully");
 					else
 						System.out.println("Record not updated");
 				} catch (SQLException e) {
-					System.out.println("Error in DB" + e.getMessage());
+					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
-					System.out.println("Data not present in DB" + e.getMessage());
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
 				}
 				break;
 
@@ -147,6 +153,10 @@ public class CustomerOptions {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
+				}catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
 				}
 				break;
 
@@ -159,6 +169,10 @@ public class CustomerOptions {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
+				}catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
 				}
 				break;
 
@@ -168,6 +182,8 @@ public class CustomerOptions {
 					for (Customer a : list)
 						System.out.println(a);
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -180,6 +196,8 @@ public class CustomerOptions {
 						System.out.println(a.getName() + " : " + a.getNumberOfReservations());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 
@@ -191,6 +209,8 @@ public class CustomerOptions {
 						System.out.println(a.getName() + " : Rs. " + a.getTotalSpent());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 
@@ -201,6 +221,8 @@ public class CustomerOptions {
 						System.out.println(a);
 				} catch (SQLException e) {
 					System.out.println("Error in DB" + e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					System.out.println(e.getMessage());
 				}
 				System.out.print("Choose customer id from above : ");
 				int customerId = sc.nextInt();
@@ -213,6 +235,8 @@ public class CustomerOptions {
 					else
 						System.out.println("Details not available");
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;

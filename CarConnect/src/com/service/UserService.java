@@ -1,3 +1,5 @@
+// Author : Anirudh Suryawanshi
+
 package com.service;
 
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import com.dao.UserDaoImpl;
 import com.dto.UserCountByRoleDto;
 import com.dto.UserReservationHistoryDto;
 import com.dto.UserTotalReservationsByStatusDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.User;
 import com.utility.UserCountByRoleUtilityAsc;
@@ -17,11 +20,11 @@ import com.utility.UserTotalReservationsUtilityAsc;
 public class UserService {
 	UserDao userDao = new UserDaoImpl();
 
-	public int insert(User user) throws SQLException {
+	public int insert(User user) throws SQLException, DatabaseConnectionException {
 		return userDao.save(user);
 	}
 
-	public void deleteById(int id) throws ResourceNotFoundException, SQLException {
+	public void deleteById(int id) throws ResourceNotFoundException, SQLException, DatabaseConnectionException {
 		boolean isValid = userDao.findOne(id);
 
 		if (!isValid)
@@ -29,7 +32,7 @@ public class UserService {
 		userDao.deleteById(id);
 	}
 
-	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException {
+	public void softDeleteById(int id) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		boolean isValid = userDao.findOne(id);
 
 		if (!isValid)
@@ -37,29 +40,28 @@ public class UserService {
 		userDao.softDeleteById(id);
 	}
 
-	public List<User> findAll() throws SQLException {
+	public List<User> findAll() throws SQLException, DatabaseConnectionException {
 		return userDao.findALL();
 	}
 
-	public int update(User user) throws SQLException, ResourceNotFoundException {
+	public int update(User user) throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		return userDao.update(user);
 	}
 
-	public List<UserCountByRoleDto> getUserCountByRole() throws SQLException, ResourceNotFoundException {
+	public List<UserCountByRoleDto> getUserCountByRole() throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		List<UserCountByRoleDto> list = userDao.getUserCountByRole();
 		Collections.sort(list, new UserCountByRoleUtilityAsc());
 		return list;
 	}
 
 	public List<UserTotalReservationsByStatusDto> getUserTotalReservationsByStatus()
-			throws SQLException, ResourceNotFoundException {
+			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		List<UserTotalReservationsByStatusDto> list = userDao.getUserTotalReservationsByStatus();
 		Collections.sort(list, new UserTotalReservationsUtilityAsc());
 		return list;
 	}
 
-	public List<UserReservationHistoryDto> getUserReservationHistory() throws SQLException, ResourceNotFoundException {
+	public List<UserReservationHistoryDto> getUserReservationHistory() throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		return userDao.getUserReservationHistory();
 	}
-
 }

@@ -1,12 +1,15 @@
+// Author : Anirudh Suryawanshi
+
 package com.controller;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
-import com.exception.InvalidInputException;
-import com.exception.ResourceNotFoundException;
+import com.exception.DatabaseConnectionException;
+import com.exception.ReservationException;
+import com.exception.VehicleNotFoundException;
 import com.model.Reservation;
 import com.model.Review;
 import com.model.Vehicle;
@@ -51,14 +54,14 @@ public class CustomerController {
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}
-
-				// Choosing vehicle id for getting its reviews
-				System.out.print("Choose vehicle id from above to see reviews : ");
-				int vehicleId = sc.nextInt();
-
-				// Getting reviews of a particular vehicle
-				System.out.println("-------------Reviews-------------");
 				try {
+					// Choosing vehicle id for getting its reviews
+					System.out.print("Choose vehicle id from above to see reviews : ");
+					int vehicleId = sc.nextInt();
+
+					// Getting reviews of a particular vehicle
+					System.out.println("-------------Reviews-------------");
+
 					List<Review> list = reviewService.getReviewsByVehicleId(vehicleId);
 					if (list.size() == 0)
 						System.out.println("No reviews avalable");
@@ -68,7 +71,9 @@ public class CustomerController {
 									"Comments: " + a.getReview_comment() + ", Rating: " + a.getReview_rating());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				} catch (InvalidInputException e) {
+				}catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				}catch (VehicleNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -80,37 +85,41 @@ public class CustomerController {
 				int randomNumber = random.nextInt();
 				int id = randomNumber < 0 ? randomNumber * -1 : randomNumber;
 
-				// Taking input from customer
-				sc.nextLine();
-				System.out.print("Enter start date : ");
-				String startDate = sc.nextLine();
-				System.out.print("Enter end date : ");
-				String endDate = sc.nextLine();
-				System.out.print("Enter total cost : ");
-				Double totalCost = sc.nextDouble();
-				String reservationStatus = "Pending";
-				int adminId = 1;
-
-				// Showing available vehicles for booking
 				try {
+					// Taking input from customer
+					sc.nextLine();
+					System.out.print("Enter start date : ");
+					String startDate = sc.nextLine();
+					System.out.print("Enter end date : ");
+					String endDate = sc.nextLine();
+					System.out.print("Enter total cost : ");
+					Double totalCost = sc.nextDouble();
+					String reservationStatus = "Pending";
+					int adminId = 1;
+
+					// Showing available vehicles for booking
 					List<Vehicle> list = vehicleService.findAllAvailable();
 					for (Vehicle a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-				System.out.print("Choose vehicle id from above to book : ");
-				vehicleId = sc.nextInt();
 
-				Reservation reservation = new Reservation(customerId, vehicleId, id, startDate, endDate, totalCost,
-						reservationStatus, adminId);
-				try {
+					System.out.print("Choose vehicle id from above to book : ");
+					int vehicleId = sc.nextInt();
+
+					Reservation reservation = new Reservation(customerId, vehicleId, id, startDate, endDate, totalCost,
+							reservationStatus, adminId);
+
 					int status = reservationService.save(reservation);
 					if (status == 1)
 						System.out.println("Reservation done successfully!!!");
 					else
 						System.out.println("Reservation failed");
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				}catch (ReservationException e) {
+					System.out.println(e.getMessage());
+				}catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -125,7 +134,9 @@ public class CustomerController {
 						System.out.println(a);
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (ReservationException e) {
+					System.out.println(e.getMessage());
+				}catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -139,7 +150,9 @@ public class CustomerController {
 						System.out.println(a);
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (ReservationException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -163,7 +176,11 @@ public class CustomerController {
 
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				} catch (ResourceNotFoundException e) {
+				} catch (ReservationException e) {
+					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -177,7 +194,7 @@ public class CustomerController {
 		String customerId = null;
 		try {
 			customerId = customerService.getCustomerIdByUsernamePassword(username, password) + "";
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
 		}
 		String[] sarr = { customerId };

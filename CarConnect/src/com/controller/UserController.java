@@ -1,11 +1,16 @@
+// Author : Anirudh Suryawanshi
+
 package com.controller;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
 import com.dto.UserCountByRoleDto;
 import com.dto.UserReservationHistoryDto;
 import com.dto.UserTotalReservationsByStatusDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.User;
 import com.service.UserService;
@@ -65,20 +70,18 @@ public class UserController {
 					list = userService.findAll();
 					for (User a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-				System.out.print("Choose user id from above: ");
-				int id = sc.nextInt();
-				sc.nextLine();
-				System.out.print("Enter username : ");
-				String username = sc.nextLine();
-				System.out.print("Enter password : ");
-				String password = sc.nextLine();
-				System.out.print("Enter role : ");
-				String role = sc.nextLine();
-				User user = new User(id, username, password, role);
-				try {
+
+					System.out.print("Choose user id from above: ");
+					int id = sc.nextInt();
+					sc.nextLine();
+					System.out.print("Enter username : ");
+					String username = sc.nextLine();
+					System.out.print("Enter password : ");
+					String password = sc.nextLine();
+					System.out.print("Enter role : ");
+					String role = sc.nextLine();
+					User user = new User(id, username, password, role);
+
 					int status = userService.update(user);
 					if (status == 1)
 						System.out.println("Record updated successfully");
@@ -88,6 +91,11 @@ public class UserController {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -96,17 +104,18 @@ public class UserController {
 					list = userService.findAll();
 					for (User a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-				System.out.print("Choose user id from above: ");
-				try {
+					System.out.print("Choose user id from above: ");
 					userService.deleteById(sc.nextInt());
 					System.out.println("Record deleted successfully");
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -115,17 +124,18 @@ public class UserController {
 					list = userService.findAll();
 					for (User a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
-				System.out.print("Choose user id from above: ");
-				try {
+					System.out.print("Choose user id from above: ");
 					userService.softDeleteById(sc.nextInt());
 					System.out.println("Record de-activated successfully");
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (InputMismatchException e) {
+					System.out.println("Please enter a valid input");
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -137,6 +147,9 @@ public class UserController {
 						System.out.println(a);
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -145,11 +158,14 @@ public class UserController {
 				try {
 					List<UserCountByRoleDto> list1 = userService.getUserCountByRole();
 					for (UserCountByRoleDto a : list1)
-						System.out.println(a.getRole()+" : "+a.getUserCount());
+						System.out.println(a.getRole() + " : " + a.getUserCount());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -163,6 +179,9 @@ public class UserController {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 
@@ -176,6 +195,9 @@ public class UserController {
 					System.out.println(e.getMessage());
 				} catch (ResourceNotFoundException e) {
 					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 			}
