@@ -1,5 +1,3 @@
-/*Author :AKSHAY PAWAR*/
-
 package com.controller;
 
 import java.sql.SQLException;
@@ -9,6 +7,7 @@ import java.util.Scanner;
 
 import com.dao.VehicleDaoImpl;
 import com.dto.VehicleDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
@@ -31,6 +30,8 @@ public class VehicleController {
 			System.out.println("Press 8. Get Vehicle's Daily Rate");
 			System.out.println("Press 9. Get Vehicle's Age");
 			System.out.println("Press 10. Get Vehicles In Sorted Order Of Daily Rate");
+			System.out.println("Press 11. Update Vehicle's Availability");
+			System.out.println("Press 12. Update Vehicle's Daily Rate");
 			System.out.println("Press 0. To Exit");
 			int input=sc.nextInt();
 			if(input==0)
@@ -65,8 +66,9 @@ public class VehicleController {
 					for(Vehicle v : list) {
 						System.out.println(v);
 					}
-				} catch (SQLException e1) {
-					System.out.println(e1.getMessage());
+				} catch (SQLException | DatabaseConnectionException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				
 				System.out.println("Enter Vendor ID");
@@ -82,19 +84,21 @@ public class VehicleController {
 						System.out.println("Vehicle record added to DB..");
 					else
 						System.out.println("Insert operation failed");
-				} catch (SQLException e) {
+				} catch (SQLException|DatabaseConnectionException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.getMessage());
 				}
 				break;
 			case 2:
+				
 				List<Vehicle> list1;
 				try {
 					list1 = vehicleService.DisplayAll();
+				
 					for(Vehicle v:list1) {
 						System.out.println(v);
 					}
-				} catch (SQLException e) {
+				} catch (SQLException|DatabaseConnectionException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.getMessage());
 				}
@@ -106,21 +110,21 @@ public class VehicleController {
 					System.out.println("Artist record deleted..");
 				} catch (SQLException e) {
 					 System.out.println(e.getMessage());
-				} catch (VehicleNotFoundException e) {
+				} catch (VehicleNotFoundException|DatabaseConnectionException e) {
 					 System.out.println(e.getMessage());
 				}				
 				break; 
-			/*case 4: 
+			case 4: 
 				System.out.println("Enter vehicle ID");
 				try {
 					vehicleService.softDeleteByid(sc.nextInt());
-					System.out.println("Artist record de-activated..");
-				} catch (InvalidInputException e) {
+					System.out.println("Vehicle de-activated..");
+				} catch (VehicleNotFoundException e) {
 					System.out.println(e.getMessage());
-				} catch (SQLException e) {
+				} catch (SQLException|DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}				
-				break;*/ 
+				break; 
 			case 5:
 				try {
 					List<VehicleDto> list11 = vehicleService.getVehicleStats();
@@ -132,7 +136,7 @@ public class VehicleController {
 						System.out.print("\n");
 				}
 					System.out.println("-------------------------------------------------------------");
-				} catch (SQLException e) {
+				} catch (SQLException|DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}	
 				break; 
@@ -143,7 +147,7 @@ public class VehicleController {
 					for(Vehicle v1:list11) {
 						System.out.println(v1);
 					}
-				} catch (SQLException e) {
+				} catch (SQLException|DatabaseConnectionException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.getMessage());
 				}
@@ -164,7 +168,7 @@ public class VehicleController {
 					for(Vehicle a : listVehicle) {
 						System.out.println(a);
 					}
-				}  catch (SQLException e) {
+				}  catch (SQLException|DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}				
 				break; 
@@ -181,7 +185,7 @@ public class VehicleController {
 				catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}	
-				catch (VehicleNotFoundException e) {
+				catch (InvalidInputException|DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}	
 				break;
@@ -193,12 +197,14 @@ public class VehicleController {
 					
 						age = vehicleService.getVehicleAge(vehicle_id1);
 						System.out.println(age);
-					} catch (SQLException|VehicleNotFoundException e) {
+					} catch (SQLException|InvalidInputException|DatabaseConnectionException e) {
 						System.out.println(e.getMessage());
 					}
-					
-             case 10:
-			    try {
+				break;
+			case 10:
+			
+				
+				try {
 					List<Vehicle>list2 =new VehicleDaoImpl().findAll();
 					System.out.println("Enter the Sorting Order");
 					sc.nextLine();
@@ -207,9 +213,53 @@ public class VehicleController {
 					for(Vehicle v:list2) {
 						System.out.println(v);
 					}
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
+				} catch (SQLException|DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}break;
+			case 11:
+				System.out.println("Enter the Vehicle id of the vehicle which you want to Update");
+				int vehicle_id2=sc.nextInt();
+				System.out.println("Update the availability of Vehicle");
+				boolean availability=sc.nextBoolean();
+				Vehicle vehicle1=new Vehicle(vehicle_id2,availability);
+				
+				int status1;
+				try {
+				
+					status1 = vehicleService.updateVehicleAvailability(vehicle1 );
+					if(status1==1)
+						System.out.println("Vehicle's Availability Updated");
+					else
+						System.out.println("Updation Failed");
+					
+				} catch (SQLException|VehicleNotFoundException|DatabaseConnectionException e) {
+				System.out.println(e.getMessage());
+				} 
+				break;
+			case 12:
+				System.out.println("Enter the Vehicle ID of the vehicle whose Daily Rate you want to Update");
+				int vehicle_Id=sc.nextInt();
+				System.out.println("New Daily Rate For vehicle");
+				double newRate1=sc.nextDouble();
+				Vehicle vehicle12=new Vehicle(vehicle_Id,newRate1);
+
+				int statuss;
+				try {
+				
+					statuss = vehicleService.updateVehicleDailyRate(vehicle12 );
+					if(statuss==1)
+						System.out.println("Vehicle's Daily Rate Updated");
+					else
+						System.out.println("Updation Failed");
+					
+				} catch (SQLException|VehicleNotFoundException|DatabaseConnectionException e) {
+				System.out.println(e.getMessage());
+				} 
+				break;
+				
+				
+				
 				 
 			}
 		}
