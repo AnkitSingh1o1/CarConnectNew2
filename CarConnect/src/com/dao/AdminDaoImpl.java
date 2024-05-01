@@ -89,11 +89,11 @@ public class AdminDaoImpl implements AdminDao {
 		while (rst.next()) {
 			int adminId = rst.getInt("admin_id");
 			String firstName = rst.getString("admin_first_name");
-			String lastName = rst.getString("admin_first_name");
-			String email = rst.getString("admin_first_name");
-			String phoneNumber = rst.getString("admin_first_name");
-			String role = rst.getString("admin_first_name");
-			String joinDate = rst.getString("admin_first_name");
+			String lastName = rst.getString("admin_last_name");
+			String email = rst.getString("admin_email");
+			String phoneNumber = rst.getString("admin_phone_number");
+			String role = rst.getString("admin_role");
+			String joinDate = rst.getString("admin_join_date");
 			int userId = rst.getInt("user_id");
 			Admin admin = new Admin(adminId, firstName, lastName, email, phoneNumber, role, joinDate, userId);
 			list.add(admin);
