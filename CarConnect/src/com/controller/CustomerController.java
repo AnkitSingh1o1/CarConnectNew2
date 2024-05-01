@@ -7,8 +7,10 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
 import com.exception.DatabaseConnectionException;
 import com.exception.ReservationException;
+import com.exception.ResourceNotFoundException;
 import com.exception.VehicleNotFoundException;
 import com.model.Reservation;
 import com.model.Review;
@@ -64,7 +66,7 @@ public class CustomerController {
 
 					List<Review> list = reviewService.getReviewsByVehicleId(vehicleId);
 					if (list.size() == 0)
-						System.out.println("No reviews avalable");
+						System.out.println("No reviews available");
 					else
 						for (Review a : list)
 							System.out.println(
@@ -72,7 +74,7 @@ public class CustomerController {
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				} catch (VehicleNotFoundException e) {
-					System.out.println("No reviews avalable");
+					System.out.println("No reviews available");
 				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
 				} catch (DatabaseConnectionException e) {
@@ -140,7 +142,7 @@ public class CustomerController {
 					System.out.println(e.getMessage());
 				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
-				}
+				} 
 				break;
 
 			case 4:
