@@ -45,7 +45,7 @@ public class ReservationController {
 				System.out.format("%-15s%-15s%-15s%-15s%n",v.getVehicle_make(), v.getVehicle_model(),
 						v.getVehicle_year(), v.getVehicle_color(), v.getVehicle_daily_rate());
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -67,7 +67,7 @@ public class ReservationController {
         double totalCost = 0;
 		try {
 			totalCost = reservationService.getTotalCost(vehicleId, startDate, endDate);
-		} catch (SQLException | InvalidInputException | DateTimeParseException | NullPointerException | VehicleNotFoundException e) {
+		} catch (SQLException | InvalidInputException | DateTimeParseException | NullPointerException | VehicleNotFoundException | DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
 		}
         

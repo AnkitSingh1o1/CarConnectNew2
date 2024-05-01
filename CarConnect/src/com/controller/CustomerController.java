@@ -51,7 +51,7 @@ public class CustomerController {
 					List<Vehicle> list = vehicleService.findAllAvailable();
 					for (Vehicle a : list)
 						System.out.println(a);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				try {
@@ -74,6 +74,8 @@ public class CustomerController {
 				}catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
 				}catch (VehicleNotFoundException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;

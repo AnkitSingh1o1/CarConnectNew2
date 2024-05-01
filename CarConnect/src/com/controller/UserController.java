@@ -37,7 +37,7 @@ public class UserController {
 			int input = sc.nextInt();
 			if (input == 0) {
 				System.out.println("Exiting from User Module...");
-				AdminController.adminMenu();
+				AdminController.adminMenu("admin", "admin123");
 				break;
 			}
 			switch (input) {

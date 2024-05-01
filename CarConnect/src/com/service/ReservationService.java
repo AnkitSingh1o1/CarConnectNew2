@@ -87,7 +87,7 @@ public class ReservationService {
 	
 	
 	public double getTotalCost(int vehicleId, String startDate, String endDate) throws SQLException, NullPointerException,
-	InvalidInputException, DateTimeParseException, VehicleNotFoundException {
+	InvalidInputException, DateTimeParseException, VehicleNotFoundException, DatabaseConnectionException {
 		
 		if(vehicleDao.findOne(vehicleId)) {
 			

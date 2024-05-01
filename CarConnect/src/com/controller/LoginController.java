@@ -60,7 +60,7 @@ public class LoginController {
 					}
 
 					else if (userLogin.getUserRole().equalsIgnoreCase("vendor")) {
-						 VendorController.vendorMenu(username,password);
+						VendorController.vendorMenu(username, password);
 					}
 
 					else {
@@ -71,6 +71,8 @@ public class LoginController {
 				} catch (InvalidInputException e) {
 					System.out.println("Invalid username or password. Please try again.");
 				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -94,7 +96,7 @@ public class LoginController {
 					System.out.println("Password Reset!!....Try logging in with new password");
 				}
 
-				catch (SQLException e) {
+				catch (SQLException | DatabaseConnectionException e) {
 					System.out.println("An error occurred while processing your request. Please try again later.");
 				}
 				break;

@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.exception.DatabaseConnectionException;
 import com.model.Address;
 import com.utility.DBConnection;
 
 public class AddressDaoImpl implements AddressDao{
 
 	@Override
-	public int save(Address address) throws SQLException {
+	public int save(Address address) throws SQLException, DatabaseConnectionException {
 		Connection con=DBConnection.dbConnect();
 		String sql="INSERT INTO address (address_id,address_state , address_city, address_pincode) VALUES (?,?,?,?)";
 		PreparedStatement pstmt=con.prepareStatement(sql);
@@ -27,7 +28,7 @@ public class AddressDaoImpl implements AddressDao{
 	}
 
 	@Override
-	public boolean findOne(int address_id) throws SQLException {
+	public boolean findOne(int address_id) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select address_id from address where address_id=?";
 		//prepare the statement 
@@ -52,7 +53,7 @@ public class AddressDaoImpl implements AddressDao{
 				DBConnection.dbClose();
 	}*/
 @Override
-	public int softDeleteById(int id) throws SQLException {
+	public int softDeleteById(int id) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="update address SET isActive='no' where address_id =?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -61,7 +62,7 @@ public class AddressDaoImpl implements AddressDao{
 		DBConnection.dbClose();
 		return status;}
 	@Override
-	public List<Address> findAll() throws SQLException {
+	public List<Address> findAll() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select * from address where isActive='yes'";
 		//prepare the statement 
@@ -81,7 +82,7 @@ public class AddressDaoImpl implements AddressDao{
 	}
 
 	@Override
-	public int updateById(Address address) throws SQLException {
+	public int updateById(Address address) throws SQLException, DatabaseConnectionException {
 	    Connection con = DBConnection.dbConnect();
 	    String sql = "UPDATE address SET address_state=?, address_city=?, address_pincode=? WHERE address_id=?";
 	    PreparedStatement pstmt = con.prepareStatement(sql);

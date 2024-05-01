@@ -2,6 +2,8 @@ package com.controller;
 
 import java.util.*;
 import java.sql.*;
+
+import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.Address;
 import com.service.AddressService;
@@ -46,7 +48,7 @@ public class AddressController {
                         } else {
                             System.out.println("Address entry failed");
                         }
-                    } catch (SQLException e) {
+                    } catch (SQLException | DatabaseConnectionException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -64,7 +66,9 @@ public class AddressController {
                         System.out.println(e.getMessage());
                     } catch (ResourceNotFoundException e) {
                         System.out.println(e.getMessage());
-                    }
+                    } catch (DatabaseConnectionException e) {
+                    	System.out.println(e.getMessage());
+					}
                     break;
 
                 case 3:
@@ -74,7 +78,7 @@ public class AddressController {
                         for (Address a : addressList) {
                             System.out.println(a);
                         }
-                    } catch (SQLException e) {
+                    } catch (SQLException | DatabaseConnectionException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -106,7 +110,9 @@ public class AddressController {
                         System.out.println(e.getMessage());
                     } catch (ResourceNotFoundException e) {
                         System.out.println(e.getMessage());
-                    }
+                    } catch (DatabaseConnectionException e) {
+                    	System.out.println(e.getMessage());
+					}
                     break;
             }
         }
