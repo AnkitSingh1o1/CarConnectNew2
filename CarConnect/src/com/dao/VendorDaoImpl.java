@@ -265,7 +265,7 @@ public class VendorDaoImpl implements VendorDao{
 		while(rst.next()) {
 			String fName = rst.getString("vendor_first_name");
 			String lName = rst.getString("vendor_last_name");
-			int vCount = rst.getInt("Below3StarReviewCounts");
+			int vCount = rst.getInt("Below3StarReviewCount");
 			
 			VendorAndCount vc = new VendorAndCount(fName, lName, vCount);
 			list.add(vc);

@@ -194,7 +194,7 @@ public class ReservationDaoImpl implements ReservationDao {
 
 		// get result into list
 		List<ReservationPerCustomer> list = new ArrayList<>();
-		while (!rst.next()) {
+		while (rst.next()) {
 			String fName = rst.getString("customer_first_name");
 			String lName = rst.getString("customer_last_name");
 			int cnt = rst.getInt("ReservationCount");

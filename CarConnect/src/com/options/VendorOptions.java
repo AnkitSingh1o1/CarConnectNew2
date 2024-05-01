@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.controller.AdminController;
+import com.exception.AddressInvalidException;
 import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.Address;
@@ -94,7 +95,7 @@ public static void main(String[] args) {
 					System.out.println("Vendor added successfully. Try loging in. Thank you!!!");
 				else
 					System.out.println("Record not added");
-			} catch (SQLException | DatabaseConnectionException e) {
+			} catch (SQLException | DatabaseConnectionException | AddressInvalidException e) {
 				System.out.println(e.getMessage());
 			} 
 			
