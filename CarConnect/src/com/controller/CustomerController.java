@@ -64,7 +64,7 @@ public class CustomerController {
 
 					List<Review> list = reviewService.getReviewsByVehicleId(vehicleId);
 					if (list.size() == 0)
-						System.out.println("No reviews avalable");
+						System.out.println("No reviews available");
 					else
 						for (Review a : list)
 							System.out.println(
@@ -72,7 +72,7 @@ public class CustomerController {
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				} catch (VehicleNotFoundException e) {
-					System.out.println("No reviews avalable");
+					System.out.println("No reviews available");
 				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
 				} catch (DatabaseConnectionException e) {
