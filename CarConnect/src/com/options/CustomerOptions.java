@@ -10,6 +10,7 @@ import com.controller.AdminController;
 import com.dto.CustomerReservationDetailsDto;
 import com.dto.CustomersWithReservationsDto;
 import com.dto.CustomersWithTotalSpentDto;
+import com.exception.AddressInvalidException;
 import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
 import com.model.Address;
@@ -141,6 +142,8 @@ public class CustomerOptions {
 					System.out.println(e.getMessage());
 				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
+				} catch (AddressInvalidException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 
