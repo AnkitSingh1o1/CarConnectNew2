@@ -1,6 +1,26 @@
 package com.model;
 
+import java.util.Objects;
+
 public class User {
+	@Override
+	public int hashCode() {
+		return Objects.hash(userId, userName, userPassword, userRole);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return userId == other.userId && Objects.equals(userName, other.userName)
+				&& Objects.equals(userPassword, other.userPassword) && Objects.equals(userRole, other.userRole);
+	}
+
 	private int userId;
 	private String userName;
 	private String userPassword;

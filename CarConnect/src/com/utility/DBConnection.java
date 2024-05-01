@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class DBConnection {
 	/* Step 1: create connection variables */ 
 	static String userDB="root" ;
-	static String passDB="Redblue@786";
-	static String url="jdbc:mysql://localhost:3306/mydb"; 
-	static String driver="com.mysql.cj.jdbc.Driver";
+	static String passDB="";
+	static String url="jdbc:mysql://localhost:3306/car_connect"; 
+	static String driver="com.mysql.jdbc.Driver";
 	static Connection con;
 	
 	public static Connection dbConnect() {
@@ -18,7 +18,7 @@ public class DBConnection {
 			Class.forName(driver);
 			//System.out.println("Driver loaded");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Driver not loaded...");
+			//System.out.println("Driver not loaded...");
 			e. printStackTrace();
 		}
 		
@@ -27,7 +27,7 @@ public class DBConnection {
 			con = DriverManager.getConnection(url, userDB, passDB);
 			//System.out.println("connection established");
 		} catch (SQLException e) {
-			System.out.println("connection failed"); e.printStackTrace();
+			//System.out.println("connection failed"); e.printStackTrace();
 		}
 		return con;
 	}
@@ -37,12 +37,12 @@ public class DBConnection {
 			con.close ();
 			//System.out.println("Connection closed ");
 		} catch (SQLException e) {
-			System.out.println("Connection could not be closed");
+			//System.out.println("Connection could not be closed");
 		}
 	}
 	
 //	public static void main(String[] args) {
-//		DBConnection.dbConnect();
+//		/DBConnection.dbConnect();
 //		DBConnection.dbClose();
 //	}
 

@@ -1,29 +1,22 @@
 package com.dto;
 
 public class AdminDto {
+	
 	public int vehicleId;
+	public String vehicleModel;
 	public int vehicleRevenue;
 	
-	
-	
-	@Override
-	public String toString() {
-		return "AdminDto [vehicleId=" + vehicleId + ", vehicleRevenue=" + vehicleRevenue + "]";
-	}
-	public AdminDto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public AdminDto(int vehicleId, int vehicleRevenue) {
-		super();
-		this.vehicleId = vehicleId;
-		this.vehicleRevenue = vehicleRevenue;
-	}
 	public int getVehicleId() {
 		return vehicleId;
 	}
 	public void setVehicleId(int vehicleId) {
 		this.vehicleId = vehicleId;
+	}
+	public String getVehicleModel() {
+		return vehicleModel;
+	}
+	public void setVehicleModel(String vehicleModel) {
+		this.vehicleModel = vehicleModel;
 	}
 	public int getVehicleRevenue() {
 		return vehicleRevenue;
@@ -31,4 +24,20 @@ public class AdminDto {
 	public void setVehicleRevenue(int vehicleRevenue) {
 		this.vehicleRevenue = vehicleRevenue;
 	}
+	@Override
+	public String toString() {
+		return "AdminDto [vehicleId=" + vehicleId + ", vehicleModel=" + vehicleModel + ", vehicleRevenue="
+				+ vehicleRevenue + "]";
+	}
+	public AdminDto(int vehicleId, String vehicleModel, int vehicleRevenue) {
+		super();
+		this.vehicleId = vehicleId;
+		this.vehicleModel = vehicleModel;
+		this.vehicleRevenue = vehicleRevenue;
+	}
+	public AdminDto() {
+		super();
+		
+	}
+	
 }

@@ -11,6 +11,7 @@ import com.dao.ReservationDaoImpl;
 import com.dto.ReservationPerCustomer;
 import com.exception.InvalidInputException;
 import com.exception.ResourceNotFoundException;
+import com.exception.VehicleNotFoundException;
 import com.model.Reservation;
 
 public class ReservationService {
@@ -54,7 +55,7 @@ public class ReservationService {
 	
 	
 	public double getTotalCost(int vehicleId, String startDate, String endDate) throws SQLException,
-	InvalidInputException, DateTimeParseException {
+	InvalidInputException, DateTimeParseException, VehicleNotFoundException {
 		
 		//Get Daily rate of a vehicle by vehicleId
 		double costPerDay = vehicleService.getDailyRate(vehicleId);

@@ -1,3 +1,6 @@
+
+//Author: Ashwin Soni
+
 package com.service;
 
 import java.sql.SQLException;
@@ -6,7 +9,7 @@ import com.dao.LoginDao;
 import com.dao.LoginDaoImpl;
 import com.exception.InvalidInputException;
 import com.model.User;
-import com.model.User;
+
 
 
 public class LoginService {

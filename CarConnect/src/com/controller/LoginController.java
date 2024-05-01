@@ -1,8 +1,12 @@
+
+//Author: Ashwin Soni
+
 package com.controller;
 
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
+
 import com.exception.InvalidInputException;
 import com.model.Address;
 import com.model.Customer;
@@ -18,8 +22,7 @@ public class LoginController {
 		UserService userService = new UserService();
 		CustomerService customerService = new CustomerService();
 		AddressService addressService = new AddressService();
-		
-		
+		// AddressService addressService = new AddressService();
 		Scanner sc = new Scanner(System.in);
 		boolean loggedIn = false;
 
@@ -56,11 +59,12 @@ public class LoginController {
 					}
 
 					else if (userLogin.getUserRole().equalsIgnoreCase("vendor")) {
-						 VendorController.vendorMenu(username, password);
+						 VendorController.vendorMenu(username,password);
 					}
 
 					else {
-						AdminController.adminMenu();
+						AdminController.adminMenu(username, password);
+						;
 					}
 					break;
 				} catch (InvalidInputException e) {
@@ -68,6 +72,7 @@ public class LoginController {
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}
+				break;
 
 			case 2:
 				try {
@@ -92,8 +97,10 @@ public class LoginController {
 					System.out.println("An error occurred while processing your request. Please try again later.");
 				}
 				break;
+
 			case 3:
 				try {
+
 					Random random = new Random();
 					int randomNumber = random.nextInt();
 					int customerId = randomNumber < 0 ? randomNumber * -1 : randomNumber;
@@ -105,7 +112,7 @@ public class LoginController {
 					String email = sc.nextLine();
 					System.out.print("Enter phone no. : ");
 					String phoneNo = sc.nextLine();
-					System.out.print("Enter phone Registration Date : ");
+					System.out.print("Enter Registration Date : ");
 					String registrationDate = sc.nextLine();
 
 					random = new Random();
@@ -124,11 +131,6 @@ public class LoginController {
 					random = new Random();
 					randomNumber = random.nextInt();
 					int userId = randomNumber < 0 ? randomNumber * -1 : randomNumber;
-
-//					System.out.print("Enter Username : ");
-//					String username = sc.nextLine();
-//					System.out.print("Enter Password : ");
-//					String password = sc.nextLine();
 
 					String password = null;
 					System.out.print("Enter Username : ");
@@ -160,6 +162,7 @@ public class LoginController {
 					System.out.println(e.getMessage());
 				}
 				break;
+
 			default:
 				System.out.println("Invalid option. Please choose again.");
 			}
