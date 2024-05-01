@@ -128,9 +128,10 @@ public static void main(String[] args) {
 					List<User> list1 = userService.findAll();
 					for (User a : list1)
 						System.out.println(a);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
+				
 				System.out.print("Choose user id from above : ");
 				int userId = sc.nextInt();
 
