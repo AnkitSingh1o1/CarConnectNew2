@@ -25,6 +25,7 @@ import com.model.User;
 import com.model.Vehicle;
 import com.model.Vendor;
 import com.options.CustomerOptions;
+import com.options.VendorOptions;
 import com.service.AdminService;
 import com.service.LoginService;
 import com.service.ReservationService;
@@ -82,7 +83,7 @@ public class AdminController {
 
 			case 3:
 
-				// VendorOptions.vendorOptions();
+				VendorOptions.vendorOptions();
 				break;
 
 			case 4:

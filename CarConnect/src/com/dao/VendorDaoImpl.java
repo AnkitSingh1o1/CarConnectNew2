@@ -25,8 +25,8 @@ public class VendorDaoImpl implements VendorDao{
 		Connection con = DBConnection.dbConnect();
 		
 		String sql = "INSERT INTO Vendor (vendor_id, vendor_first_name, vendor_last_name, "
-				+ "vendor_email, vendor_phone_number,"
-				+ "user_id, vendor_registration_date, address_id)"
+				+ "vendor_email, vendor_phone_number, "
+				+ "user_id, vendor_registration_date, address_id) "
 				+ "VALUES (?,?,?,?,?,?,?,?)";
 			
 		//prepare statement
@@ -78,15 +78,15 @@ public class VendorDaoImpl implements VendorDao{
 	public int update(int id, Vendor updatedVendor) 
 			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "update vendor"
+		String sql = "update vendor "
 				+ "set vendor_id = ?, "
-				+ "vendor_first_name = ?,"
-				+ "vendor_last_name = ?,"
-				+ "vendor_email = ?,"
-				+ "vendor_phone_number = ?,"
-				+ "user_id = ?,"
-				+ "vendor_registration_date = ?,"
-				+ "address_id = ?"
+				+ "vendor_first_name = ?, "
+				+ "vendor_last_name = ?, "
+				+ "vendor_email = ?, "
+				+ "vendor_phone_number = ?, "
+				+ "user_id = ?, "
+				+ "vendor_registration_date = ?, "
+				+ "address_id = ? "
 				+ "WHERE vendor_id = ?";
 		
 		//prepare statement
@@ -195,8 +195,8 @@ public class VendorDaoImpl implements VendorDao{
 	public List<VendorAndCount> countVendorVehicle()
 			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select vendor_first_name, vendor_last_name, count(*) as VehicleCount"
-				+ "from vendor vd left join vehicle v on vd.vendor_id = v.vendor_id"
+		String sql = "select vendor_first_name, vendor_last_name, count(*) as VehicleCount "
+				+ "from vendor vd left join vehicle v on vd.vendor_id = v.vendor_id "
 				+ "group by vendor_first_name, vendor_last_name";
 				//+ "order by VehicleCount desc;";
 		
@@ -221,10 +221,10 @@ public class VendorDaoImpl implements VendorDao{
 	public List<VendorAndCount> vendorWithGoodReviewCount() 
 			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select vendor_first_name, vendor_last_name, count(*) as Above3StarReviewCount"
-				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id"
-				+ "join review r on r.vehicle_id = v.vehicle_id"
-				+ "where r.review_rating >= 4"
+		String sql = "select vendor_first_name, vendor_last_name, count(*) as Above3StarReviewCount "
+				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id "
+				+ "join review r on r.vehicle_id = v.vehicle_id "
+				+ "where r.review_rating >= 4 "
 				+ "group by vendor_first_name, vendor_last_name";
 				//+ "order by Above4StarReviewCount desc";
 		
@@ -250,10 +250,10 @@ public class VendorDaoImpl implements VendorDao{
 	public List<VendorAndCount> vendorWithBadReviewCount() 
 			throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select vendor_first_name, vendor_last_name, count(*) as Below3StarReviewCount"
-				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id"
-				+ "join review r on r.vehicle_id = v.vehicle_id"
-				+ "where r.review_rating < 3"
+		String sql = "select vendor_first_name, vendor_last_name, count(*) as Below3StarReviewCount "
+				+ "from vendor vd join vehicle v on vd.vendor_id = v.vendor_id "
+				+ "join review r on r.vehicle_id = v.vehicle_id "
+				+ "where r.review_rating < 3 "
 				+ "group by vendor_first_name, vendor_last_name";
 				//+ "order by Above4StarReviewCount desc";
 		

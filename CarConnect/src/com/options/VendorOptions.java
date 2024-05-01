@@ -31,15 +31,15 @@ public static void main(String[] args) {
 			System.out.println();
 			System.out.println("Press 1. Insert Vendor ");
 			System.out.println("Press 2. Update Vendor ");
-			System.out.println("Press 3. Delete Venodr ");
-			System.out.println("Press 4. Deactivate Venodr ");
+			System.out.println("Press 3. Delete Vendor ");
+			System.out.println("Press 4. Deactivate Vendor ");
 			System.out.println("Press 5. Show All Vendors ");
-			System.out.println("Press 0. To Exit");
+			System.out.println("Press 0. Exit");
 			
 			System.out.print("Choose an option: ");
 			int input = sc.nextInt();
 			if (input == 0) {
-				System.out.println("Exiting from Venodr Module...");
+				System.out.println("Exiting from Vendor Module...");
 				AdminController.adminMenu("admin", "admin123");
 				break;
 			}
@@ -78,7 +78,7 @@ public static void main(String[] args) {
 				
 
 				//Add into user -> address -> vendor
-				User newUser = new User(userId, username, password, "Venodr");
+				User newUser = new User(userId, username, password, "Vendor");
 				
 				int uStatus = userService.insert(newUser);
 				
