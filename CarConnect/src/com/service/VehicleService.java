@@ -9,7 +9,6 @@ import java.util.List;
 import com.dao.VehicleDao;
 import com.dao.VehicleDaoImpl;
 import com.dto.VehicleDto;
-import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
 import com.utility.AscSortOfVehicleByDailyRate;
@@ -26,7 +25,7 @@ public class VehicleService {
 		return dao.findAll();
 		
 	}
-	public void deleteByid(int id) throws VehicleNotFoundException, SQLException {
+	public void deleteByid(int id) throws  SQLException ,VehicleNotFoundException {
 		boolean isIdValid = dao.findOne(id);
 		if(!isIdValid)
 			throw new VehicleNotFoundException("Id given is Invalid!!");
@@ -34,14 +33,14 @@ public class VehicleService {
 		dao.deleteById(id);
 		
 	}
-	/*public void softDeleteByid(int id) throws InvalidInputException, SQLException {
+	public void softDeleteByid(int id) throws SQLException,VehicleNotFoundException  {
 		boolean isIdValid = dao.findOne(id);
 		if(!isIdValid)
-			throw new InvalidInputException("Id given is Invalid!!");
+			throw new VehicleNotFoundException("Id given is Invalid!!");
 		 
 		dao.softDeleteById(id);
 		
-	}*/
+	}
 	public List<VehicleDto> getVehicleStats() throws SQLException {
 		return dao.getVehicleStats();
 	}
@@ -83,6 +82,12 @@ public class VehicleService {
 			Collections.sort(list, new DescSortOfVehicleByDailyRate());
 		}
 		return list;
+	}
+	public int updateVehicleAvailability(Vehicle vehicle1) throws SQLException, VehicleNotFoundException {
+		return dao.updateVehicleAvailability(vehicle1);
+	}
+	public int updateVehicleDailyRate(Vehicle vehicle12) throws SQLException, VehicleNotFoundException {
+		return dao.updateVehicleDailyRate(vehicle12);
 	}
 		
 }

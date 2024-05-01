@@ -3,12 +3,11 @@
 package com.dao;
 
 import java.sql.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dto.VehicleDto;
-import com.exception.InvalidInputException;
+
 import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
 import com.utility.DBConnection;
@@ -90,9 +89,9 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	
-	/*
+	
 	@Override
-	public void softDeleteById(int id) throws SQLException, InvalidInputException {
+	public void softDeleteById(int id) throws SQLException, VehicleNotFoundException {
 		Connection con = DBConnection.dbConnect();
 		String sql="update vehicle SET isActive='no' where vehicle_id =?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -100,7 +99,7 @@ public class VehicleDaoImpl implements VehicleDao {
 		pstmt.executeUpdate();
 		DBConnection.dbClose();
 		
-	}*/
+	}
 
 	@Override
 	public List<VehicleDto> getVehicleStats() throws SQLException {
@@ -211,6 +210,39 @@ public class VehicleDaoImpl implements VehicleDao {
 			throw new VehicleNotFoundException("vehicle Id is not valid");
 		}
 	}
+
+	@Override
+	public int updateVehicleAvailability(Vehicle vehicle1) throws SQLException, VehicleNotFoundException {
+		Connection con = DBConnection.dbConnect();
+		String sql="update  vehicle set vehicle_availability=? where vehicle_id=? ";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+	
+		
+		pstmt.setBoolean(1,vehicle1.isVehicle_availability());
+		pstmt.setInt(2, vehicle1.getVehicle_id());
+		
+		int status=pstmt.executeUpdate();		
+		
+		DBConnection.dbClose();
+		return status;
+	}
+
+	@Override
+	public int updateVehicleDailyRate(Vehicle vehicle12) throws SQLException, VehicleNotFoundException {
+		Connection con = DBConnection.dbConnect();
+		String sql="update  vehicle set vehicle_daily_rate=? where vehicle_id=? ";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+	
+		
+		pstmt.setDouble(1, vehicle12.getVehicle_daily_rate());
+	    pstmt.setInt(3, vehicle12.getVehicle_id());
+		
+		int status=pstmt.executeUpdate();		
+		
+		DBConnection.dbClose();
+		return status;
+	}
+
 
 	
 	

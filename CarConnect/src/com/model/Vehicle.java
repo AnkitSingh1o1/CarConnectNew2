@@ -93,6 +93,20 @@ public class Vehicle {
 		this.vehicle_daily_rate = vehicle_daily_rate;
 		this.vendor_id = vendor_id;
 	}
+	
+	
+
+	public Vehicle(int vehicle_id, boolean vehicle_availability) {
+		super();
+		this.vehicle_id = vehicle_id;
+		this.vehicle_availability = vehicle_availability;
+		
+	}
+	public Vehicle(int vehicle_id,double vehicle_daily_rate) {
+		super();
+		this.vehicle_id = vehicle_id;
+		this.vehicle_daily_rate = vehicle_daily_rate;
+	}
 	  
 	public Vehicle() {
 		

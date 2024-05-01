@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import com.dao.VehicleDaoImpl;
 import com.dto.VehicleDto;
-import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
 import com.service.VehicleService;
@@ -31,6 +30,8 @@ public class VehicleController {
 			System.out.println("Press 8. Get Vehicle's Daily Rate");
 			System.out.println("Press 9. Get Vehicle's Age");
 			System.out.println("Press 10. Get Vehicles In Sorted Order Of Daily Rate");
+			System.out.println("Press 11. Update Vehicle's Availability");
+			System.out.println("Press 12. Update Vehicle's Daily Rate");
 			System.out.println("Press 0. To Exit");
 			int input=sc.nextInt();
 			if(input==0)
@@ -110,17 +111,17 @@ public class VehicleController {
 					 System.out.println(e.getMessage());
 				}				
 				break; 
-			/*case 4: 
+			case 4: 
 				System.out.println("Enter vehicle ID");
 				try {
 					vehicleService.softDeleteByid(sc.nextInt());
 					System.out.println("Artist record de-activated..");
-				} catch (InvalidInputException e) {
+				} catch (VehicleNotFoundException e) {
 					System.out.println(e.getMessage());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}				
-				break;*/ 
+				break; 
 			case 5:
 				try {
 					List<VehicleDto> list11 = vehicleService.getVehicleStats();
@@ -210,6 +211,50 @@ public class VehicleController {
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
 				}
+             case 11:
+ 				System.out.println("Enter the Vehicle id of the vehicle which you want to Update");
+ 				int vehicle_id2=sc.nextInt();
+ 				System.out.println("Update the availability of Vehicle");
+ 				boolean availability=sc.nextBoolean();
+ 				Vehicle vehicle1=new Vehicle(vehicle_id2,availability);
+ 				
+ 				int status1;
+ 				try {
+ 				
+ 					status1 = vehicleService.updateVehicleAvailability(vehicle1 );
+ 					if(status1==1)
+ 						System.out.println("Vehicle's Availability Updated");
+ 					else
+ 						System.out.println("Updation Failed");
+ 					
+ 				} catch (SQLException|VehicleNotFoundException e) {
+ 				System.out.println(e.getMessage());
+ 				} 
+ 				break;
+ 			case 12:
+ 				System.out.println("Enter the Vehicle ID of the vehicle whose Daily Rate you want to Update");
+ 				int vehicle_Id=sc.nextInt();
+ 				System.out.println("New Daily Rate For vehicle");
+ 				double newRate1=sc.nextDouble();
+ 				Vehicle vehicle12=new Vehicle(vehicle_Id,newRate1);
+
+ 				int statuss;
+ 				try {
+ 				
+ 					statuss = vehicleService.updateVehicleDailyRate(vehicle12 );
+ 					if(statuss==1)
+ 						System.out.println("Vehicle's Daily Rate Updated");
+ 					else
+ 						System.out.println("Updation Failed");
+ 					
+ 				} catch (SQLException|VehicleNotFoundException e) {
+ 				System.out.println(e.getMessage());
+ 				} 
+ 				break;
+			    
+			    
+			    
+			    
 				 
 			}
 		}

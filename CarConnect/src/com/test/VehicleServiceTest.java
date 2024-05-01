@@ -4,7 +4,7 @@ package com.test;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.List;
 
 import org.junit.Assert;
