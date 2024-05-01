@@ -7,45 +7,36 @@ import java.sql.SQLException;
 import com.exception.DatabaseConnectionException;
 
 public class DBConnection {
-	/* Step 1: create connection variables */ 
-	static String userDB="root" ;
-	static String passDB="Redblue@786";
-	static String url="jdbc:mysql://localhost:3306/mydb"; 
-	static String driver="com.mysql.cj.jdbc.Driver";
+	static String userDB = "root";
+	static String passDB = "";
+	static String url = "jdbc:mysql://localhost:3306/car_connect";
+	static String driver = "com.mysql.jdbc.Driver";
 	static Connection con;
-	
+
 	public static Connection dbConnect() throws DatabaseConnectionException {
-		/* Step 2: load the driver */
 		try {
 			Class.forName(driver);
-			//System.out.println("Driver loaded");
+//			System.out.println("Driver loaded");
 		} catch (ClassNotFoundException e) {
 			throw new DatabaseConnectionException("Driver not loaded...");
 		}
-		
-		/* Step 3: Establish the connection */ 
+
 		try {
 			con = DriverManager.getConnection(url, userDB, passDB);
-			//System.out.println("connection established");
+//			System.out.println("Driver established");
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("connection failed");
+			throw new DatabaseConnectionException("Connection failed...");
 		}
 		return con;
 	}
-	
-	
+
 	public static void dbClose() throws DatabaseConnectionException {
 		try {
-			con.close ();
-			//System.out.println("Connection closed ");
+			con.close();
+//			System.out.println("Driver closed");
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Connection could not be closed");
+			throw new DatabaseConnectionException("Connection not closed...");
 		}
 	}
-	
-//	public static void main(String[] args) {
-//		DBConnection.dbConnect();
-//		DBConnection.dbClose();
-//	}
 
 }

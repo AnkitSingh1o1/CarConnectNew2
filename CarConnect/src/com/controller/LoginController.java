@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.exception.AddressInvalidException;
 import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.model.Address;
@@ -161,7 +162,7 @@ public class LoginController {
 					} else {
 						System.out.println("Sign Up failed...");
 					}
-				} catch (SQLException | DatabaseConnectionException e) {
+				} catch (SQLException | DatabaseConnectionException | AddressInvalidException e) {
 					System.out.println(e.getMessage());
 				}
 				break;

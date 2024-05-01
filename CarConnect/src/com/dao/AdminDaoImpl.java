@@ -38,8 +38,9 @@ public class AdminDaoImpl implements AdminDao {
 	public List<AdminDto> vehicleRevenue() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 
-		String sql = " SELECT vehicle_id,vehicle_model, sum(reservation_total_cost) as 'vehicleRevenue' "
-				+ "FROM reservation GROUP BY vehicle_id ";
+		String sql = "SELECT v.vehicle_id,v.vehicle_model, sum(r.reservation_total_cost) as "
+				+ "'vehicleRevenue' FROM reservation r JOIN vehicle v ON v.vehicle_id = "
+				+ "r.vehicle_id GROUP BY vehicle_id";
 
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		ResultSet rst = pstmt.executeQuery();
@@ -51,7 +52,7 @@ public class AdminDaoImpl implements AdminDao {
 			int totalRevenue = rst.getInt("vehicleRevenue");
 			String vehicleModel = rst.getString("vehicle_model");
 
-			AdminDto admin = new AdminDto(vehicleId,vehicleModel, totalRevenue);
+			AdminDto admin = new AdminDto(vehicleId, vehicleModel, totalRevenue);
 			list.add(admin);
 
 		}
@@ -129,22 +130,22 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public void updateAdmin(int adminId,AdminUpdate admin) throws SQLException, DatabaseConnectionException {
+	public void updateAdmin(int adminId, AdminUpdate admin) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "UPDATE admin SET admin_first_name = ? , admin_last_name = ?, admin_email = ?, admin_phone_number = ?, admin_role = ? WHERE admin_id = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		
+
 		pstmt.setString(1, admin.getAdminFirstName());
 		pstmt.setString(2, admin.getAdminLastName());
 		pstmt.setString(3, admin.getAdminEmail());
 		pstmt.setString(4, admin.getAdminPhoneNumber());
 		pstmt.setString(5, admin.getAdminRole());
 		pstmt.setInt(6, adminId);
-		
+
 		pstmt.executeUpdate();
 
 		DBConnection.dbClose();
-		
+
 	}
 
 	@Override
@@ -157,7 +158,7 @@ public class AdminDaoImpl implements AdminDao {
 		List<Customer> list = new ArrayList<>();
 		Customer customer = new Customer();
 		while (rst.next()) {
-			
+
 			list.add(customer);
 
 		}
@@ -174,7 +175,7 @@ public class AdminDaoImpl implements AdminDao {
 		pstmt.setString(2, password);
 		ResultSet rst = pstmt.executeQuery();
 		int adminId = 0;
-		if(rst.next()) {
+		if (rst.next()) {
 			adminId = rst.getInt("admin_id");
 		}
 		DBConnection.dbClose();

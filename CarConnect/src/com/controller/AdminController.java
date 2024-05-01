@@ -47,16 +47,16 @@ public class AdminController {
 		while (true) {
 
 			System.out.println("----------Welcome Admin------------");
-			System.out.println("Press 1 for User Options");
-			System.out.println("Press 2 for Customer Options");
-			System.out.println("Press 3 for Vendor Options");
-			System.out.println("Press 4 to List reservations");
-			System.out.println("Press 5 to List Vehicles");
-			System.out.println("Press 6 to List Reviews");
-			System.out.println("Press 7 to Get Reports");
-			System.out.println("Press 8 to Add Admin");
-			System.out.println("Press 9 to Deactivate Admin");
-			System.out.println("Press 10 to Update Admin");
+			System.out.println("Press 1 User Options");
+			System.out.println("Press 2 Customer Options");
+			System.out.println("Press 3 Vendor Options");
+			System.out.println("Press 4 List reservations");
+			System.out.println("Press 5 List Vehicles");
+			System.out.println("Press 6 List Reviews");
+			System.out.println("Press 7 Get Reports");
+			System.out.println("Press 8 Add Admin");
+			System.out.println("Press 9 Deactivate Admin");
+			System.out.println("Press 10 Update Admin");
 			System.out.println("Press 0 to Exit");
 
 			// Take User input
@@ -126,15 +126,15 @@ public class AdminController {
 
 				while (true) {
 					System.out.println("----------Get Reports------------");
-					System.out.println("Press 1 for Vendor With Review Rating >= 4");// vendorWithBadReview
-					System.out.println("Press 2 for Vendor With Review Rating < 3 ");// vendorWithGoodReview
-					System.out.println("Press 3 to Get Reservation Count Per Customer");// getReservationCountPerCustomer(Service)
-					System.out.println("Press 4 to Get Vehicle Stats");// getVehicleStats
-					System.out.println("Press 5 for Get Review Stats");
-					System.out.println("Press 6 for Total Revenue Report");
-					System.out.println("Press 7 for Vehicle Revenue");
-					System.out.println("Press 8 to List Customer with NO Reservation History");
-					System.out.println("Press 0 to Exit");
+					System.out.println("Press 1 Vendor With Review Rating >= 4");// vendorWithBadReview
+					System.out.println("Press 2 Vendor With Review Rating < 3 ");// vendorWithGoodReview
+					System.out.println("Press 3 Get Reservation Count Per Customer");// getReservationCountPerCustomer(Service)
+					System.out.println("Press 4 Get Vehicle Stats");// getVehicleStats
+					System.out.println("Press 5 Get Review Stats");
+					System.out.println("Press 6 Total Revenue Report");
+					System.out.println("Press 7 Vehicle Revenue");
+					System.out.println("Press 8 List Customer with NO Reservation History");
+					System.out.println("Press 0 To Exit");
 
 					int option = sc.nextInt();
 
@@ -229,7 +229,7 @@ public class AdminController {
 						}
 
 						break;
-					case 9:
+					case 8:
 						try {
 							List<Customer> list = adminService.getCustomerWithNoReservation();
 							for (Customer a : list) {
