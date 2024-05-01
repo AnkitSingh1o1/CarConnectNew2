@@ -1,12 +1,14 @@
-**🚗 Car Connect 🚗**
+## **🚗 Car Connect 🚗**
 
 
-🌟 Overview
+### 🌟 Overview
+------------------
 
 Car Connect is a platform that facilitates seamless car rental experiences by connecting users with car vendors who list their vehicles for rent. Whether you're planning a road trip, need a temporary ride for your commute, or simply want to test drive a different car, Car Connect has got you covered.
 
 
-💡 Features
+### 💡 Features
+-------------------
 
 User-Friendly Interface: Navigate through a sleek and intuitive interface designed to make car rental hassle-free.
 
@@ -18,7 +20,9 @@ Review System: Share your rental experiences and read reviews from other users t
 
 24/7 Support: Have questions or concerns? Our support team is available around the clock to assist you.
 
-⚙️ How It Works
+
+### ⚙️ How It Works
+---------------------
 
 Browse Cars: Explore the available cars listed by vendors. Filter by location, price, and vehicle type to narrow down your options.
 
@@ -29,14 +33,15 @@ Enjoy Your Ride: Pick up the car from the vendor at the designated location, and
 Leave a Review: After your rental period ends, share your experience by leaving a review. Your feedback helps other users make informed decisions.
 
 
+### 🛠️ Technologies Used
+------------------------------
 
-🛠️ Technologies Used
+* Java, Eclipse
+* SQL, MySQL
 
 
-
-
-
-🤝 Contributing
+### 🤝 Contributing
+-----------------------
 
 We welcome contributions from the community! If you'd like to contribute to Car Connect, please follow these guidelines:
 
