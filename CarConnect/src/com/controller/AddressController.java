@@ -2,10 +2,11 @@ package com.controller;
 
 import java.util.*;
 import java.sql.*;
-
-import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
+import com.exception.AddressInvalidException;
+import com.exception.DatabaseConnectionException; 
 import com.model.Address;
+import com.dto.*;
 import com.service.AddressService;
 
 public class AddressController {
@@ -17,6 +18,9 @@ public class AddressController {
             System.out.println("Press 2: Delete Address");
             System.out.println("Press 3: View all Addresses");
             System.out.println("Press 4: Update Address");
+            System.out.println("Press 5: Find Address ID using User ID");
+            System.out.println("Press 6: List Cities by Reservation count");
+
             System.out.println("Press 0: Exit");
             int input = sc.nextInt();
             if (input == 0) {
@@ -48,9 +52,13 @@ public class AddressController {
                         } else {
                             System.out.println("Address entry failed");
                         }
-                    } catch (SQLException | DatabaseConnectionException e) {
+                    } catch (SQLException e) {
                         System.out.println(e.getMessage());
-                    }
+                    }catch (DatabaseConnectionException e) { 
+                        System.out.println(e.getMessage());
+                    } catch (AddressInvalidException e) {
+						e.printStackTrace();
+					}
                     break;
 
                 case 2:
@@ -66,9 +74,9 @@ public class AddressController {
                         System.out.println(e.getMessage());
                     } catch (ResourceNotFoundException e) {
                         System.out.println(e.getMessage());
-                    } catch (DatabaseConnectionException e) {
-                    	System.out.println(e.getMessage());
-					}
+                    }catch (DatabaseConnectionException e) { 
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 3:
@@ -78,11 +86,14 @@ public class AddressController {
                         for (Address a : addressList) {
                             System.out.println(a);
                         }
-                    } catch (SQLException | DatabaseConnectionException e) {
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }catch (DatabaseConnectionException e) { 
                         System.out.println(e.getMessage());
                     }
                     break;
-
+                    
+                
                 case 4:
                     Address address1 = new Address();
                     System.out.println("Enter Address ID: ");
@@ -110,12 +121,44 @@ public class AddressController {
                         System.out.println(e.getMessage());
                     } catch (ResourceNotFoundException e) {
                         System.out.println(e.getMessage());
-                    } catch (DatabaseConnectionException e) {
-                    	System.out.println(e.getMessage());
-					}
+                    }catch (DatabaseConnectionException e) {
+                        System.out.println(e.getMessage());
+                    }catch (AddressInvalidException e) {
+                        e.printStackTrace();
+                    }
                     break;
-            }
-        }
+                    
+                case 5:
+                	System.out.println("Enter UserId");
+                	try {
+                		System.out.println("Address ID: " + addressService.getAddressIdByUserId(sc.nextInt()));
+                	} catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    } catch (ResourceNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    } catch (DatabaseConnectionException e) {
+                        System.out.println(e.getMessage());
+                    } catch (AddressInvalidException e) {
+                    	System.out.println(e.getMessage());
+					} 
+                	break;
+
+                case 6:
+               	 System.out.println("Viewing Cities by Reservation Count");
+                    try {
+                        List<ReservationPerCity> reservationPerCity = addressService.getReservationPerCity();
+                        for (ReservationPerCity r : reservationPerCity) {
+                            System.out.println(r.getCity()+ ": "+ r.getReservationCount());
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }catch (DatabaseConnectionException e) { 
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                    
+                           
+        }}
         sc.close();
     }
 }
