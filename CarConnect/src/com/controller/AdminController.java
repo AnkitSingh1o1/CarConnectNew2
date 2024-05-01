@@ -365,13 +365,8 @@ public class AdminController {
 		try {
 			adminId = adminService.getAdminIdByUsername(username, password) + " ";
 
-		} catch (AuthenticationException e) {
+		} catch (AuthenticationException | SQLException | DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} catch (DatabaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		String[] charary = { adminId };
 		main(charary);

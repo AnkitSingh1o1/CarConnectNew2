@@ -24,7 +24,7 @@ public class VendorDaoImpl implements VendorDao{
 		//open connection
 		Connection con = DBConnection.dbConnect();
 		
-		String sql = "INSERT INTO Vendor (vendor_id, vendor_first_name, vendor_last_name,"
+		String sql = "INSERT INTO Vendor (vendor_id, vendor_first_name, vendor_last_name, "
 				+ "vendor_email, vendor_phone_number,"
 				+ "user_id, vendor_registration_date, address_id)"
 				+ "VALUES (?,?,?,?,?,?,?,?)";
@@ -276,12 +276,12 @@ public class VendorDaoImpl implements VendorDao{
 
 
 	@Override
-	public String getVendorIdByUsernamePassword(String username, String password) 
+	public int getVendorIdByUsernamePassword(String username, String password) 
 			throws SQLException, ResourceNotFoundException, DatabaseConnectionException {
 		
 		Connection con = DBConnection.dbConnect();
-		String sql = "select v.vendor_id"
-				+ "from user u join vendor v on u.user_id = v.user_id"
+		String sql = "select v.vendor_id "
+				+ "from user u join vendor v on u.user_id = v.user_id "
 				+ "where u.user_username = ? and u.user_password = ?";
 		
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -289,10 +289,13 @@ public class VendorDaoImpl implements VendorDao{
 		pstmt.setString(2, password);
 		
 		ResultSet rst = pstmt.executeQuery();
-		int vendor_id = rst.getInt("vendor_id");
+		int vendorId = 0;
+		if (rst.next())
+			vendorId = rst.getInt("vendor_id");
 		
 		DBConnection.dbClose();
-		return ""+vendor_id;
+		return vendorId;
+		
 	}
 	
 	

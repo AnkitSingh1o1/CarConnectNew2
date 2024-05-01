@@ -25,7 +25,6 @@ public class VendorController {
 	public static void main(String[] args) {
 
 		// extract vendorId
-		int vendorId = Integer.parseInt(args[0]);
 		// int vendorId = 6;
 
 		Scanner sc = new Scanner(System.in);
@@ -34,6 +33,8 @@ public class VendorController {
 		ReviewService reviewService = new ReviewService();
 
 		while (true) {
+			int vendorId = Integer.parseInt(args[0]);
+			//System.out.println(vendorId);
 			System.out.println("          Vendor");
 			System.out.println("--------------------------");
 			System.out.println();
@@ -49,6 +50,7 @@ public class VendorController {
 			int choice = sc.nextInt();
 
 			if (choice == 0) {
+				LoginController.loginController();
 				break;
 			}
 			switch (choice) {
@@ -119,7 +121,7 @@ public class VendorController {
 						break;
 
 				} catch (SQLException | DatabaseConnectionException e) {
-					e.getMessage();
+					System.out.println(e.getMessage());
 				}
 				System.out.println("");
 				System.out.println("");
@@ -130,29 +132,31 @@ public class VendorController {
 				System.out.println("---------------------------------");
 				System.out.println();
 
+				
 				// Get list
 				List<Reservation> list = null;
 				try {
 					list = reservationService.vendorFindAllReservationsByStatus(vendorId, "Pending");
 				} catch (SQLException | ReservationException | DatabaseConnectionException e) {
-					System.out.println("findAllReservationsByStatus: " + e.getMessage());
+					System.out.println(e.getMessage());
 				}
 
 				if (list == null || list.size() == 0)
 					System.out.println("Sorry, you do not have any reservation.");
 				else {
-					System.out.format("%-15s%-15s%-15s%-15s%-15s%n", "Customer", "Vehicle", "StartDate", "EndDate",
-							"Status");
+					System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%n", "Customer", "Vehicle", "StartDate", "EndDate",
+							"Status", "ReservationId");
 					System.out.println("--------------------------------------------------------------");
 					for (Reservation r : list) {
-						System.out.format("%-15s%-15s%-15s%-15s%-15s%n", r.getCustomer_id(), r.getVehicle_id(),
-								r.getReservation_start_date(), r.getReservation_end_date(), r.getReservation_status());
+						System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%n", r.getCustomer_id(), r.getVehicle_id(),
+								r.getReservation_start_date(), r.getReservation_end_date(), r.getReservation_status(), r.getReservation_id());
 					}
 					System.out.println();
 					System.out.println("1. Accept a reservation");
 				}
 				System.out.println("0. Back");
 
+			
 				// choice
 				System.out.println("Enter you choice");
 				int choice1 = sc.nextInt();
@@ -334,12 +338,14 @@ public class VendorController {
 	public static void vendorMenu(String username, String password) {
 
 		VendorService vendorService = new VendorService();
+		String vendorId = null;
 		try {
-			String vendorId = vendorService.getVendorIdByUsernamePassword(username, password);
-			String[] sarr = { "" + vendorId };
-			main(sarr);
+			vendorId = vendorService.getVendorIdByUsernamePassword(username, password)+"";
+			
 		} catch (SQLException | DatabaseConnectionException | ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+		String[] sarr = { vendorId };
+		main(sarr);
 	}
 }

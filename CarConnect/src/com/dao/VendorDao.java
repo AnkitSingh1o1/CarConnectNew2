@@ -24,5 +24,6 @@ public interface VendorDao {
 	List<VendorAndCount> countVendorVehicle() throws SQLException, DatabaseConnectionException; 
 	List<VendorAndCount> vendorWithGoodReviewCount() throws SQLException, DatabaseConnectionException; // Review rating >= 4
 	List<VendorAndCount> vendorWithBadReviewCount() throws SQLException, DatabaseConnectionException; // Review rating <= 3
-	String getVendorIdByUsernamePassword(String username, String password) throws SQLException, ResourceNotFoundException, DatabaseConnectionException;
+	int getVendorIdByUsernamePassword(String username, String password) throws SQLException, ResourceNotFoundException, DatabaseConnectionException;
 }
+ 

@@ -65,7 +65,7 @@ public class LoginController {
 
 					else {
 						AdminController.adminMenu(username, password);
-						;
+						
 					}
 					break;
 				} catch (InvalidInputException e) {

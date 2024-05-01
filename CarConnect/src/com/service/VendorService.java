@@ -73,7 +73,7 @@ public class VendorService {
 		return dao.vendorWithBadReviewCount();
 	}
 	
-	public String getVendorIdByUsernamePassword(String username, String password) 
+	public int getVendorIdByUsernamePassword(String username, String password) 
 			throws SQLException, ResourceNotFoundException, DatabaseConnectionException{
 		return dao.getVendorIdByUsernamePassword(username, password);
 	}

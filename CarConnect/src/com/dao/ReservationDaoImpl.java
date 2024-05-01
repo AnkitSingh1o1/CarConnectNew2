@@ -25,7 +25,7 @@ public class ReservationDaoImpl implements ReservationDao {
 		// open connection
 		Connection con = DBConnection.dbConnect();
 
-		String sql = "INSERT INTO Reservation (reservation_id, reservation_start_date,"
+		String sql = "INSERT INTO Reservation (reservation_id, reservation_start_date, "
 				+ "reservation_end_date,reservation_total_cost, reservation_status,"
 				+ " customer_id, vehicle_id, admin_id) VALUES(?,?,?,?,?,?,?,?)";
 
@@ -92,9 +92,9 @@ public class ReservationDaoImpl implements ReservationDao {
 	@Override
 	public int update(int id, Reservation updatedReservation) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
-		String sql = "update reservation " + "set customer_id = ?, " + "vehicle_id = ?, "
-				+ "reservation_start_date = ?, " + "reservation_end_date = ?, " + "reservation_total_cost = ?, "
-				+ "reservation_status = ?, " + "admin_id = ? " + "where reservation_id = ?";
+		String sql = "update reservation set customer_id = ?, vehicle_id = ?, "
+				+ "reservation_start_date = ?, reservation_end_date = ?, reservation_total_cost = ?, "
+				+ "reservation_status = ?, admin_id = ? where reservation_id = ?";
 
 		// prepare statement
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -154,7 +154,7 @@ public class ReservationDaoImpl implements ReservationDao {
 	@Override
 	public List<Reservation> findAllReservationsById(int id) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
-		String sql = "select r.* from customer c JOIN reservation r ON " + "c.customer_id=r.customer_id "
+		String sql = "select r.* from customer c JOIN reservation r ON c.customer_id=r.customer_id "
 				+ "where c.customer_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, id);
@@ -181,8 +181,8 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservationPerCustomer> getReservationCountPerCustomer() throws SQLException, DatabaseConnectionException{
 
 		Connection con = DBConnection.dbConnect();
-		String sql = "select customer_first_name, customer_last_name, count(*) as ReservationCount"
-				+ "from reservation r join customer c" + "on r.customer_id = c.customer_id "
+		String sql = "select customer_first_name, customer_last_name, count(*) as ReservationCount "
+				+ "from reservation r join customer c on r.customer_id = c.customer_id "
 				+ "group by customer_first_name, customer_last_name";
 		// + "order by ReservationCount desc;";
 
@@ -216,8 +216,8 @@ public class ReservationDaoImpl implements ReservationDao {
 		Connection con = DBConnection.dbConnect();
 
 		// prepare sql string
-		String sql = "select r.* from customer c JOIN reservation r ON"
-						+ "c.customer_id=r.customer_id"
+		String sql = "select r.* from customer c JOIN reservation r ON "
+						+ "c.customer_id=r.customer_id "
 						+ "where c.customer_id=? AND r.reservation_status=?";
 	
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -290,8 +290,8 @@ public class ReservationDaoImpl implements ReservationDao {
 		Connection con = DBConnection.dbConnect();
 
 		// prepare sql string
-		String sql = "select r.*" + "from reservation r join vehicle v on r.vehicle_id = v.vehicle_id"
-				+ "join vendor vd on vd.vendor_id = v.vendor_id" 
+		String sql = "select r.* from reservation r join vehicle v on r.vehicle_id = v.vehicle_id "
+				+ "join vendor vd on vd.vendor_id = v.vendor_id " 
 				+ "where v.vendor_id = ? AND r.reservation_status = ?";
 		
 	

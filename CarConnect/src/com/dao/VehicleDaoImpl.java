@@ -154,7 +154,7 @@ public class VehicleDaoImpl implements VehicleDao {
 		Connection con = DBConnection.dbConnect();
 		/*Sub-Query*/
 		String sql="select * from vehicle  where vendor_id in "
-				+ "(select vendor_id from vendor where vendor_id=?);";
+				+ "(select vendor_id from vendor where vendor_id=?)";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, vendorId);
 		ResultSet rst = pstmt.executeQuery();
