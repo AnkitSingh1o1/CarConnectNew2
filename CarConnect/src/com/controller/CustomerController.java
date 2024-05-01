@@ -142,7 +142,7 @@ public class CustomerController {
 					System.out.println(e.getMessage());
 				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
-				} 
+				}
 				break;
 
 			case 4:
@@ -176,13 +176,20 @@ public class CustomerController {
 						System.out.print("Choose reservation id from above to return : ");
 					}
 					int reservationId = sc.nextInt();
-					Reservation updatedReservation = reservationService.getReservatonById(reservationId);
-					updatedReservation.setReservation_status("due");
-					int status = reservationService.update(reservationId, updatedReservation);
-					if (status == 1)
-						System.out.println("Vehicle returned successfully!!!");
-					else
-						System.out.println("Vehicle not returned");
+					for (Reservation r : list) {
+						if (r.getReservation_id() == reservationId) {
+							Reservation updatedReservation = new Reservation(r.getCustomer_id(), r.getVehicle_id(),
+									r.getReservation_id(), r.getReservation_start_date(), r.getReservation_end_date(),
+									r.getReservation_total_cost(), "due", r.getAdmin_id());
+
+							int status = reservationService.update(reservationId, updatedReservation);
+							if (status == 1)
+								System.out.println("Vehicle returned successfully!!!");
+							else
+								System.out.println("Vehicle not returned");
+							break;
+						}
+					}
 
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
