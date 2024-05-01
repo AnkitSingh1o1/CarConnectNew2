@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.dao.LoginDao;
 import com.dao.LoginDaoImpl;
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.model.User;
 import com.model.User;
@@ -15,7 +16,7 @@ public class LoginService {
 	
 	LoginDao loginDao = new LoginDaoImpl();
 	
-	public User login(String username, String password) throws SQLException, InvalidInputException {
+	public User login(String username, String password) throws SQLException, InvalidInputException, DatabaseConnectionException {
 		
 		User loginUser = loginDao.login(username, password);
 		
@@ -27,7 +28,7 @@ public class LoginService {
 		return loginUser;
 	}
 
-	public int resetPassword(String user, String newPassword) throws  SQLException {
+	public int resetPassword(String user, String newPassword) throws  SQLException, DatabaseConnectionException {
 	
 		return loginDao.resetPassword(user, newPassword);
 	}
