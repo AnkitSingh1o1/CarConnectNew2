@@ -40,7 +40,7 @@ public class CustomerOptions {
 			int input = sc.nextInt();
 			if (input == 0) {
 				System.out.println("Exiting from Customer Module...");
-				AdminController.adminMenu();
+				AdminController.adminMenu("admin", "admin123");
 				break;
 			}
 			switch (input) {
@@ -155,7 +155,7 @@ public class CustomerOptions {
 					System.out.println(e.getMessage());
 				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
-				}catch (InputMismatchException e) {
+				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
 				}
 				break;
@@ -171,7 +171,7 @@ public class CustomerOptions {
 					System.out.println(e.getMessage());
 				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
-				}catch (InputMismatchException e) {
+				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
 				}
 				break;

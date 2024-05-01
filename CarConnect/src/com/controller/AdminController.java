@@ -104,7 +104,7 @@ public class AdminController {
 					for (Vehicle v : list) {
 						System.out.println(v);
 					}
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -116,7 +116,7 @@ public class AdminController {
 					for (Review r : list) {
 						System.out.println(r);
 					}
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -128,12 +128,11 @@ public class AdminController {
 					System.out.println("Press 1 for Vendor With Review Rating >= 4");// vendorWithBadReview
 					System.out.println("Press 2 for Vendor With Review Rating < 3 ");// vendorWithGoodReview
 					System.out.println("Press 3 to Get Reservation Count Per Customer");// getReservationCountPerCustomer(Service)
-					System.out.println("Press 4 for City Reservation Report");
-					System.out.println("Press 5 to Get Vehicle Stats");// getVehicleStats
-					System.out.println("Press 6 for Get Review Stats");
-					System.out.println("Press 7 for Total Revenue Report");
-					System.out.println("Press 8 for Vehicle Revenue");
-					System.out.println("Press 9 to List Customer with NO Reservation History");
+					System.out.println("Press 4 to Get Vehicle Stats");// getVehicleStats
+					System.out.println("Press 5 for Get Review Stats");
+					System.out.println("Press 6 for Total Revenue Report");
+					System.out.println("Press 7 for Vehicle Revenue");
+					System.out.println("Press 8 to List Customer with NO Reservation History");
 					System.out.println("Press 0 to Exit");
 
 					int option = sc.nextInt();
@@ -178,51 +177,40 @@ public class AdminController {
 						break;
 
 					case 4:
-						try {
-							List<ReservationPerCity> list = reservationService.getReservationCountPerCity();
-							for (ReservationPerCity r : list) {
-								System.out.println(r);
-							}
-						} catch (SQLException e) {
-							System.out.println(e.getMessage());
-						}
-						break;
-						
-					case 5:
-						
+
 						try {
 							List<VehicleDto> list = vehicleService.getVehicleStats();
 							for (VehicleDto v : list) {
 								System.out.println(v);
 							}
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 						break;
-						
-					case 6:
-					
+
+					case 5:
+
 						try {
 							List<ReviewDto> list = reviewService.getReviewStats();
 							for (ReviewDto r : list) {
 								System.out.println(r);
 							}
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 						break;
-						
-					case 7:
+
+					case 6:
 						// fetch total revenue for the reservations with completed status
 						try {
 							double revenue = adminService.getRevenue();
 							System.out.println("The Total Revenue is : " + revenue);
 
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 						break;
-					case 8:
+					case 7:
 						// fetch the revenue report for each vehicle and displays vehicle_id and total
 						// revenue earned
 
@@ -231,11 +219,11 @@ public class AdminController {
 							sc.nextLine();
 							String direction = sc.nextLine();
 							List<AdminDto> list = adminService.vehicleRevenue();
-							list = adminService.sortVehicleRevenue(list,direction);
+							list = adminService.sortVehicleRevenue(list, direction);
 							for (AdminDto a : list) {
 								System.out.println(a);
 							}
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 
@@ -246,15 +234,15 @@ public class AdminController {
 							for (Customer a : list) {
 								System.out.println(a);
 							}
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 						break;
 					}
-					
+
 				}
 				break;
-				
+
 			case 8:
 				try {
 					Random random = new Random();
@@ -294,7 +282,7 @@ public class AdminController {
 							adminJoinDate, userId);
 					User user = new User(userId, username, password, "admin");
 					int status = adminService.addAdmin(admin);
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 
@@ -312,7 +300,7 @@ public class AdminController {
 
 				} catch (AdminNotFoundException e) {
 					System.out.println(e.getMessage());
-				} catch (SQLException e) {
+				} catch (SQLException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -326,14 +314,14 @@ public class AdminController {
 						try {
 							System.out.println("Press 0 to go BACK");
 							adminId = sc.nextInt();
-							if(adminId == 0) {
+							if (adminId == 0) {
 								break;
 							}
 							adminService.getAdminById(adminId);
 							break;
 						} catch (AdminNotFoundException e) {
 							System.out.println(e.getMessage());
-						} catch (SQLException e) {
+						} catch (SQLException | DatabaseConnectionException e) {
 							System.out.println(e.getMessage());
 						}
 
@@ -349,16 +337,18 @@ public class AdminController {
 					String adminPhoneNumber = sc.nextLine();
 					System.out.println("Enter Admin Role");
 					String adminRole = sc.nextLine();
-					
 
-					AdminUpdate admin = new AdminUpdate(adminFName, adminLName, adminEmail, adminPhoneNumber, adminRole);
+					AdminUpdate admin = new AdminUpdate(adminFName, adminLName, adminEmail, adminPhoneNumber,
+							adminRole);
 
-					adminService.updateAdmin(adminId,admin);
+					adminService.updateAdmin(adminId, admin);
 					System.out.println("Admin with : " + adminId + " has been Updated");
 
 				} catch (AdminNotFoundException e) {
 					System.out.println(e.getMessage());
-				}catch (SQLException e) {
+				} catch (SQLException e) {
+					System.out.println(e.getMessage());
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 
@@ -373,9 +363,9 @@ public class AdminController {
 		AdminService adminService = new AdminService();
 		String adminId = null;
 		try {
-		adminId = adminService.getAdminIdByUsername(username,password) + " ";
-		
-		}catch(AuthenticationException e) {
+			adminId = adminService.getAdminIdByUsername(username, password) + " ";
+
+		} catch (AuthenticationException e) {
 			System.out.println(e.getMessage());
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -386,6 +376,5 @@ public class AdminController {
 		String[] charary = { adminId };
 		main(charary);
 	}
-
 
 }
