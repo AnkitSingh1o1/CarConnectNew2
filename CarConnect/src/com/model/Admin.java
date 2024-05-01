@@ -10,11 +10,12 @@ public class Admin {
 	private String adminPhoneNumber;
 	private String adminRole;
 	private String adminJoinDate;
+	private int adminUserId;
 	
 	//generate parameterized constructor
 	
 	public Admin(int adminId, String adminFirstName, String adminLastName, String adminEmail, String adminPhoneNumber,
-			String adminRole, String adminJoinDate) {
+			String adminRole, String adminJoinDate, int adminUserId) {
 		super();
 		this.adminId = adminId;
 		this.adminFirstName = adminFirstName;
@@ -23,6 +24,7 @@ public class Admin {
 		this.adminPhoneNumber = adminPhoneNumber;
 		this.adminRole = adminRole;
 		this.adminJoinDate = adminJoinDate;
+		this.adminUserId = adminUserId;
 	}
 	
 	//Generating default constructor
@@ -78,12 +80,19 @@ public class Admin {
 	public void setAdminJoinDate(String adminJoinDate) {
 		this.adminJoinDate = adminJoinDate;
 	}
-	
+	public int getAdminUserId() {
+		return adminUserId;
+	}
+	public void setAdminUserId(int adminUserId) {
+		this.adminUserId = adminUserId;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", adminFirstName=" + adminFirstName + ", adminLastName=" + adminLastName
 				+ ", adminEmail=" + adminEmail + ", adminPhoneNumber=" + adminPhoneNumber + ", adminRole=" + adminRole
-				+ ", adminJoinDate=" + adminJoinDate + "]";
+				+ ", adminJoinDate=" + adminJoinDate + ", adminUserId=" + adminUserId + "]";
 	}
 	
 }
