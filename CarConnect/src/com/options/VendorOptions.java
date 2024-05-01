@@ -40,7 +40,7 @@ public static void main(String[] args) {
 			int input = sc.nextInt();
 			if (input == 0) {
 				System.out.println("Exiting from Venodr Module...");
-				AdminController.adminMenu();
+				AdminController.adminMenu("admin", "admin123");
 				break;
 			}
 			

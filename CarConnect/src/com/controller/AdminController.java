@@ -128,12 +128,11 @@ public class AdminController {
 					System.out.println("Press 1 for Vendor With Review Rating >= 4");// vendorWithBadReview
 					System.out.println("Press 2 for Vendor With Review Rating < 3 ");// vendorWithGoodReview
 					System.out.println("Press 3 to Get Reservation Count Per Customer");// getReservationCountPerCustomer(Service)
-					System.out.println("Press 4 for City Reservation Report");
-					System.out.println("Press 5 to Get Vehicle Stats");// getVehicleStats
-					System.out.println("Press 6 for Get Review Stats");
-					System.out.println("Press 7 for Total Revenue Report");
-					System.out.println("Press 8 for Vehicle Revenue");
-					System.out.println("Press 9 to List Customer with NO Reservation History");
+					System.out.println("Press 4 to Get Vehicle Stats");// getVehicleStats
+					System.out.println("Press 5 for Get Review Stats");
+					System.out.println("Press 6 for Total Revenue Report");
+					System.out.println("Press 7 for Vehicle Revenue");
+					System.out.println("Press 8 to List Customer with NO Reservation History");
 					System.out.println("Press 0 to Exit");
 
 					int option = sc.nextInt();
@@ -177,18 +176,8 @@ public class AdminController {
 						}
 						break;
 
-					case 4:
-						try {
-							List<ReservationPerCity> list = reservationService.getReservationCountPerCity();
-							for (ReservationPerCity r : list) {
-								System.out.println(r);
-							}
-						} catch (SQLException e) {
-							System.out.println(e.getMessage());
-						}
-						break;
 						
-					case 5:
+					case 4:
 						
 						try {
 							List<VehicleDto> list = vehicleService.getVehicleStats();
@@ -200,7 +189,7 @@ public class AdminController {
 						}
 						break;
 						
-					case 6:
+					case 5:
 					
 						try {
 							List<ReviewDto> list = reviewService.getReviewStats();
@@ -212,7 +201,7 @@ public class AdminController {
 						}
 						break;
 						
-					case 7:
+					case 6:
 						// fetch total revenue for the reservations with completed status
 						try {
 							double revenue = adminService.getRevenue();
@@ -222,7 +211,7 @@ public class AdminController {
 							System.out.println(e.getMessage());
 						}
 						break;
-					case 8:
+					case 7:
 						// fetch the revenue report for each vehicle and displays vehicle_id and total
 						// revenue earned
 
@@ -240,7 +229,7 @@ public class AdminController {
 						}
 
 						break;
-					case 9:
+					case 8:
 						try {
 							List<Customer> list = adminService.getCustomerWithNoReservation();
 							for (Customer a : list) {
@@ -356,7 +345,7 @@ public class AdminController {
 					adminService.updateAdmin(adminId,admin);
 					System.out.println("Admin with : " + adminId + " has been Updated");
 
-				} catch (AdminNotFoundException e) {
+				} catch (AdminNotFoundException | DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}catch (SQLException e) {
 					System.out.println(e.getMessage());
