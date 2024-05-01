@@ -71,10 +71,10 @@ public class CustomerController {
 									"Comments: " + a.getReview_comment() + ", Rating: " + a.getReview_rating());
 				} catch (SQLException e) {
 					System.out.println(e.getMessage());
-				}catch (InputMismatchException e) {
+				} catch (VehicleNotFoundException e) {
+					System.out.println("No reviews avalable");
+				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
-				}catch (VehicleNotFoundException e) {
-					System.out.println(e.getMessage());
 				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
@@ -119,9 +119,9 @@ public class CustomerController {
 					System.out.println(e.getMessage());
 				} catch (InputMismatchException e) {
 					System.out.println("Please enter a valid input");
-				}catch (ReservationException e) {
-					System.out.println(e.getMessage());
-				}catch (DatabaseConnectionException e) {
+				} catch (DatabaseConnectionException e) {
+					System.out.println("Please enter a valid input");
+				} catch (ReservationException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -138,7 +138,7 @@ public class CustomerController {
 					System.out.println(e.getMessage());
 				} catch (ReservationException e) {
 					System.out.println(e.getMessage());
-				}catch (DatabaseConnectionException e) {
+				} catch (DatabaseConnectionException e) {
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -164,9 +164,15 @@ public class CustomerController {
 				try {
 					List<Reservation> list = reservationService.customerFindAllReservationsByStatus(customerId,
 							"confirmed");
-					for (Reservation a : list)
-						System.out.println(a);
-					System.out.print("Choose reservation id from above to return : ");
+					if (list.isEmpty()) {
+						System.out.print("You have no vehicle to return");
+						System.out.println();
+						break;
+					} else {
+						for (Reservation a : list)
+							System.out.println(a);
+						System.out.print("Choose reservation id from above to return : ");
+					}
 					int reservationId = sc.nextInt();
 					Reservation updatedReservation = reservationService.getReservatonById(reservationId);
 					updatedReservation.setReservation_status("due");
@@ -196,7 +202,9 @@ public class CustomerController {
 		String customerId = null;
 		try {
 			customerId = customerService.getCustomerIdByUsernamePassword(username, password) + "";
-		} catch (SQLException | DatabaseConnectionException e) {
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} catch (DatabaseConnectionException e) {
 			System.out.println(e.getMessage());
 		}
 		String[] sarr = { customerId };
