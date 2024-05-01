@@ -1,5 +1,3 @@
-/*Author :AKSHAY PAWAR*/
-
 package com.dao;
 
 import java.sql.*;
@@ -8,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dto.VehicleDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Vehicle;
@@ -16,7 +15,7 @@ import com.utility.DBConnection;
 public class VehicleDaoImpl implements VehicleDao {
 
 	@Override
-	public int addVehicle(Vehicle vehicle) throws SQLException {
+	public int addVehicle(Vehicle vehicle) throws SQLException,DatabaseConnectionException {
 		Connection con=DBConnection.dbConnect();
 		String sql="INSERT INTO Vehicle (vehicle_id, vehicle_model, vehicle_make, vehicle_year, vehicle_color,"
 				+ " vehicle_registration_no, vehicle_availability, vehicle_daily_rate, vendor_id)"
@@ -39,7 +38,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public List<Vehicle> findAll() throws SQLException {
+	public List<Vehicle> findAll() throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select * from vehicle  ";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -64,7 +63,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public void deleteById(int vehicleId) throws SQLException, VehicleNotFoundException {
+	public void deleteById(int vehicleId) throws SQLException, VehicleNotFoundException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="delete from vehicle where vehicle_id =?";
 		//prepare the statement 
@@ -76,7 +75,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public Boolean findOne(int vehicleId) throws SQLException {
+	public Boolean findOne(int vehicleId) throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select vehicle_id from vehicle where vehicle_id=?";
 		//prepare the statement 
@@ -90,9 +89,9 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	
-	/*
+	
 	@Override
-	public void softDeleteById(int id) throws SQLException, InvalidInputException {
+	public void softDeleteById(int id) throws SQLException, VehicleNotFoundException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="update vehicle SET isActive='no' where vehicle_id =?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -100,12 +99,13 @@ public class VehicleDaoImpl implements VehicleDao {
 		pstmt.executeUpdate();
 		DBConnection.dbClose();
 		
-	}*/
+	}
 
 	@Override
-	public List<VehicleDto> getVehicleStats() throws SQLException {
+	public List<VehicleDto> getVehicleStats() throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql="select v.vendor_id,concat(vendor_first_name,\" \",vendor_last_name)as vendorName,count(v.vendor_id)as numberOfVehicles from vendor v join vehicle ve on v.vendor_id=ve.vendor_id group by v.vendor_id;";
+		String sql="select v.vendor_id,concat(vendor_first_name,\" \",vendor_last_name)as vendorName,"
+				+ "count(v.vendor_id)as numberOfVehicles from vendor v join vehicle ve on v.vendor_id=ve.vendor_id group by v.vendor_id;";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		 
 		ResultSet rst = pstmt.executeQuery();
@@ -124,10 +124,11 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public List<Vehicle> findAllAvailable() throws SQLException {
+	public List<Vehicle> findAllAvailable() throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
-		String sql="select * from vehicle where vehicle_availability=1";
+		String sql="select * from vehicle where vehicle_availability=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setBoolean(1, true);
 		ResultSet rst = pstmt.executeQuery();
 		List<Vehicle> list = new ArrayList<>();
 		while(rst.next() == true) {
@@ -149,7 +150,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public List<Vehicle> findMyVehicles(int vendorId) throws SQLException {
+	public List<Vehicle> findMyVehicles(int vendorId) throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		/*Sub-Query*/
 		String sql="select * from vehicle  where vendor_id in "
@@ -178,7 +179,7 @@ public class VehicleDaoImpl implements VehicleDao {
 	}
 
 	@Override
-	public double getDailyRate(int vehicleId) throws SQLException, VehicleNotFoundException {
+	public double getDailyRate(int vehicleId) throws SQLException, InvalidInputException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select vehicle_daily_rate from vehicle where vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -190,13 +191,13 @@ public class VehicleDaoImpl implements VehicleDao {
 			DBConnection.dbClose();	
 		return vehicleDailyRate;}
 		else {
-			throw new VehicleNotFoundException("vehicle Id is not valid");
+			throw new InvalidInputException("vehicle Id is not valid");
 		}
 		
 	}
 
 	@Override
-	public int getVehicleYear(int vehicleId) throws SQLException, VehicleNotFoundException {
+	public int getVehicleYear(int vehicleId) throws SQLException, InvalidInputException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select vehicle_year from vehicle where vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -208,8 +209,44 @@ public class VehicleDaoImpl implements VehicleDao {
 			DBConnection.dbClose();	
 		return vehicle_year;}
 		else {
-			throw new VehicleNotFoundException("vehicle Id is not valid");
+			throw new InvalidInputException("vehicle Id is not valid");
 		}
+	}
+
+	@Override
+	public int updateVehicleAvailability(Vehicle vehicle1) throws SQLException, VehicleNotFoundException,DatabaseConnectionException {
+		Connection con = DBConnection.dbConnect();
+		String sql="update  vehicle set vehicle_availability=? where vehicle_id=? ";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+	
+		
+		pstmt.setBoolean(1,vehicle1.isVehicle_availability());
+		pstmt.setInt(2, vehicle1.getVehicle_id());
+		
+		int status=pstmt.executeUpdate();		
+		
+		DBConnection.dbClose();
+		return status;
+	}
+
+	@Override
+	public int updateVehicleDailyRate(Vehicle vehicle12) throws SQLException, VehicleNotFoundException,DatabaseConnectionException {
+		Connection con = DBConnection.dbConnect();
+		String sql="update  vehicle set vehicle_daily_rate=? where vehicle_id=? ";
+		PreparedStatement pstmt=con.prepareStatement(sql);
+	
+		
+		pstmt.setDouble(1, vehicle12.getVehicle_daily_rate());
+	    pstmt.setInt(2, vehicle12.getVehicle_id());
+		
+		int status=pstmt.executeUpdate();		
+		
+		DBConnection.dbClose();
+		return status;
+	}
+
+
+
 	}
 
 	
@@ -224,4 +261,4 @@ public class VehicleDaoImpl implements VehicleDao {
 
 	
 
-}
+

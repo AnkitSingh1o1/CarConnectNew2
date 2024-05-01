@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dto.ReviewDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Review;
@@ -18,7 +19,7 @@ import com.utility.DBConnection;
 public class ReviewDaoImpl implements ReviewDao{
 
 	@Override
-	public int add(Review review) throws SQLException {
+	public int add(Review review) throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="INSERT INTO Review (customer_id, vehicle_id, review_comment, review_id, review_rating)"
 				+ "VALUES "
@@ -37,7 +38,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public List<Review> findAll() throws SQLException {
+	public List<Review> findAll() throws SQLException, DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select * from review ";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -58,7 +59,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public void deleteById(int id) throws SQLException, InvalidInputException {
+	public void deleteById(int id) throws SQLException, InvalidInputException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="delete from review where customer_id =?";
 		//prepare the statement 
@@ -70,7 +71,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public boolean findOne(int customerId) throws SQLException  {
+	public boolean findOne(int customerId) throws SQLException,DatabaseConnectionException  {
 		Connection con = DBConnection.dbConnect();
 		String sql="select customer_id from review where customer_id=?";
 		//prepare the statement 
@@ -83,7 +84,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public List<Review> getReviewsByVendorId(int vendor_id) throws SQLException {
+	public List<Review> getReviewsByVendorId(int vendor_id) throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select r.* from review r join vehicle v on r.vehicle_id=v.vehicle_id"
 				+ " join vendor vd on vd.vendor_id=v.vendor_id where vd.vendor_id=?";
@@ -107,7 +108,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException,VehicleNotFoundException {
+	public List<Review> getReviewsByVehicleId(int vehicle_id) throws SQLException,VehicleNotFoundException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql=" select r.* from review r join vehicle v on r.vehicle_id=v.vehicle_id where v.vehicle_id=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -128,7 +129,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public List<ReviewDto> getReviewStats() throws SQLException {
+	public List<ReviewDto> getReviewStats() throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select v.vehicle_id,v.vehicle_model,vehicle_make,"
 				+ "count(v.vehicle_id)as numberOfReviews,avg(r.review_rating)as avgRatingOfVehicle"
@@ -155,7 +156,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public boolean findVehicle(int vehicleId) throws SQLException {
+	public boolean findVehicle(int vehicleId) throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select v.vehicle_id from review r join vehicle v on r.vehicle_id=v.vehicle_id where v.vehicle_id=?";
 		//prepare the statement 
@@ -168,7 +169,7 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 
 	@Override
-	public boolean findVendor(int vendorId) throws SQLException {
+	public boolean findVendor(int vendorId) throws SQLException,DatabaseConnectionException {
 		Connection con = DBConnection.dbConnect();
 		String sql="select v.vendor_id from review r join vehicle v on r.vehicle_id=v.vehicle_id where v.vendor_id=?";
 		//prepare the statement 

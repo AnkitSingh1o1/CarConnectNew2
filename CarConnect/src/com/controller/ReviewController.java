@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import com.dao.ReviewDaoImpl;
 import com.dto.ReviewDto;
+import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.exception.VehicleNotFoundException;
 import com.model.Review;
@@ -63,7 +64,7 @@ public class ReviewController {
 					System.out.println("review record added to DB..");
 				else
 					System.out.println("Adding operation failed");
-			} catch (SQLException e) {
+			} catch (SQLException|DatabaseConnectionException  e) {
 				System.out.println(e.getMessage());
 			}
 			break;
@@ -75,7 +76,7 @@ public class ReviewController {
 			 List<Review> list = reviewService.DisplayAll();
 				for(Review r: list) {
 					System.out.println(r);}
-			} catch (SQLException e) {
+			} catch (SQLException| DatabaseConnectionException e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
 			}break;
@@ -88,7 +89,7 @@ public class ReviewController {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InvalidInputException e) {
+			} catch (InvalidInputException| DatabaseConnectionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -108,7 +109,7 @@ public class ReviewController {
 			for(Review r : listReview) {
 				System.out.println(r);
 			}}
-			catch (InvalidInputException e) {
+			catch (InvalidInputException| DatabaseConnectionException e) {
 				System.out.println(e.getMessage());
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -131,7 +132,7 @@ public class ReviewController {
 			}}
 			catch (VehicleNotFoundException e) {
 				System.out.println(e.getMessage());
-			} catch (SQLException e) {
+			} catch (SQLException|DatabaseConnectionException e) {
 				System.out.println(e.getMessage());
 			}	
 			break;
@@ -146,7 +147,7 @@ public class ReviewController {
 					System.out.print("\n");
 			}
 				System.out.println("---------------------------------------------------------------------------------------");
-			} catch (SQLException e) {
+			} catch (SQLException | DatabaseConnectionException e) {
 				System.out.println(e.getMessage());
 			}	
 			break; 
@@ -160,7 +161,7 @@ public class ReviewController {
 				for(Review v:list2) {
 					System.out.println(v);
 				}
-			} catch (SQLException e) {
+			} catch (SQLException | DatabaseConnectionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
