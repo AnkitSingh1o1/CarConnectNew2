@@ -92,9 +92,7 @@ public class ReservationDaoImpl implements ReservationDao {
 	@Override
 	public int update(int id, Reservation updatedReservation) throws SQLException, ReservationException, DatabaseConnectionException{
 		Connection con = DBConnection.dbConnect();
-		String sql = "update reservation set customer_id = ?, vehicle_id = ?, "
-				+ "reservation_start_date = ?, reservation_end_date = ?, reservation_total_cost = ?, "
-				+ "reservation_status = ?, admin_id = ? where reservation_id = ?";
+		String sql = "update reservation set customer_id = ?, vehicle_id = ?, reservation_start_date = ?, reservation_end_date = ?, reservation_total_cost = ?, reservation_status = ?, admin_id = ? where reservation_id = ?";
 
 		// prepare statement
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -243,45 +241,7 @@ public class ReservationDaoImpl implements ReservationDao {
 	}
 
 	
-//	public List<Reservation> findAllReservationsByStatus(int id, String status)
-//			 throws SQLException, ReservationException, DatabaseConnectionException, ResourceNotFoundException{
 //
-//		Connection con = DBConnection.dbConnect();
-//		CustomerDaoImpl cDao = new CustomerDaoImpl();
-//		
-//		String sql = null;
-//		if(cDao.findOne(id)) {  //confirmed or pending
-//			sql =  "select r.* from customer c JOIN reservation r ON"
-//					+ "c.customer_id=r.customer_id"
-//					+ "where c.customer_id=? AND r.reservation_status=?"; 
-//		}
-//		else {  //pending or Due
-//			sql =  "select r.*" + "from reservation r join vehicle v on r.vehicle_id = v.vehicle_id"
-//					+ "join vendor vd on vd.vendor_id = v.vendor_id" 
-//					+ "where v.vendor_id = ? AND r.reservation_status = ?";
-//		}
-//	
-//		PreparedStatement pstmt = con.prepareStatement(sql);
-//		pstmt.setInt(1, id);
-//		pstmt.setString(2, status);
-//
-//		ResultSet rst = pstmt.executeQuery();
-//		List<Reservation> list = new ArrayList<>();
-//		while (rst.next()) {
-//			int id1 = rst.getInt("reservation_id");
-//			String startDate = rst.getString("reservation_start_date");
-//			String endDate = rst.getString("reservation_end_date");
-//			double totalCost = rst.getDouble("reservation_total_cost");
-//			String status1 = rst.getString("reservation_status");
-//			int cId = rst.getInt("customer_id");
-//			int vId = rst.getInt("vehicle_id");
-//			int aId = rst.getInt("admin_id");
-//			Reservation reservation = new Reservation(cId, vId, id1, startDate, endDate, totalCost, status1, aId);
-//			list.add(reservation);
-//		}
-//		DBConnection.dbClose();
-//		return list;
-//	}
 	
 	@Override
 	public List<Reservation> vendorFindAllReservationsByStatus(int id, String status) //pending or Due

@@ -4,39 +4,46 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.exception.DatabaseConnectionException;
-
 public class DBConnection {
-	static String userDB = "root";
-	static String passDB = "";
-	static String url = "jdbc:mysql://localhost:3306/car_connect";
-	static String driver = "com.mysql.jdbc.Driver";
+	/* Step 1: create connection variables */ 
+	static String userDB="root" ;
+	static String passDB="Redblue@786";
+	static String url="jdbc:mysql://localhost:3306/mydb"; 
+	static String driver="com.mysql.cj.jdbc.Driver";
 	static Connection con;
-
-	public static Connection dbConnect() throws DatabaseConnectionException {
+	
+	public static Connection dbConnect() {
+		/* Step 2: load the driver */
 		try {
 			Class.forName(driver);
-//			System.out.println("Driver loaded");
+			//System.out.println("Driver loaded");
 		} catch (ClassNotFoundException e) {
-			throw new DatabaseConnectionException("Driver not loaded...");
+			System.out.println("Driver not loaded...");
+			e. printStackTrace();
 		}
-
+		
+		/* Step 3: Establish the connection */ 
 		try {
 			con = DriverManager.getConnection(url, userDB, passDB);
-//			System.out.println("Driver established");
+			//System.out.println("connection established");
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Connection failed...");
+			System.out.println("connection failed"); e.printStackTrace();
 		}
 		return con;
 	}
-
-	public static void dbClose() throws DatabaseConnectionException {
+	
+	public static void dbClose() {
 		try {
-			con.close();
-//			System.out.println("Driver closed");
+			con.close ();
+			//System.out.println("Connection closed ");
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Connection not closed...");
+			System.out.println("Connection could not be closed");
 		}
 	}
+	
+//	public static void main(String[] args) {
+//		DBConnection.dbConnect();
+//		DBConnection.dbClose();
+//	}
 
 }
