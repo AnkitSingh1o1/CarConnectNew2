@@ -20,7 +20,7 @@ public class AddressController {
             System.out.println("Press 4: Update Address");
             System.out.println("Press 5: Find Address ID using User ID");
             System.out.println("Press 6: List Cities by Reservation count");
-
+            System.out.println("Press 7: List Cities by Total Revenue");
             System.out.println("Press 0: Exit");
             int input = sc.nextInt();
             if (input == 0) {
@@ -157,6 +157,19 @@ public class AddressController {
                     }
                     break;
                     
+                case 7:
+                    System.out.println("Viewing Cities by Total Revenue");
+                    try {
+                        List<RevenuePerCity> revenuePerCity = addressService.getRevenuePerCity();
+                        for (RevenuePerCity r : revenuePerCity) {
+                            System.out.println(r.getCity() + ": " + r.getTotalRevenue());
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }catch (DatabaseConnectionException e) { 
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                            
         }}
         sc.close();

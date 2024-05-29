@@ -41,6 +41,19 @@ public class AddressDaoImpl implements AddressDao{
 		return status;
 	}
 
+
+	@Override
+	public boolean isCityStateValid(String city,String state) throws SQLException,DatabaseConnectionException{
+		Connection con=DBConnection.dbConnect();
+		String sql="Select * from indian_cities where lower(city)=lower(?) and lower(state)=lower(?)";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+	    pstmt.setString(1, city);
+	    pstmt.setString(2, state);
+	    ResultSet rst = pstmt.executeQuery();
+	    boolean isValid=rst.next();
+	    DBConnection.dbClose();
+	    return isValid;
+	}
 	
 	/*public void DeleteById(int address_id) throws SQLException {
 		// TODO Auto-generated method stub
@@ -111,4 +124,5 @@ public class AddressDaoImpl implements AddressDao{
 	    DBConnection.dbClose();
 	    return address_id;
 	}
-}
+	}
+

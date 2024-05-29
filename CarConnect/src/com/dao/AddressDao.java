@@ -9,10 +9,15 @@ import com.model.Address;
 public interface AddressDao {
 	int save(Address address) throws SQLException,DatabaseConnectionException;
 	boolean findOne(int address_id) throws SQLException,ResourceNotFoundException,DatabaseConnectionException;
+	
 	//int DeleteById(int address_id) throws SQLException;
+	
 	List<Address> findAll() throws SQLException,DatabaseConnectionException;
 	int softDeleteById(int address_id) throws SQLException,ResourceNotFoundException,DatabaseConnectionException;
 	int updateById(Address address) throws SQLException,ResourceNotFoundException,DatabaseConnectionException;
+	
 	//int getAddressIdByCustomerID(int id) throws SQLException;
+	
 	int getAddressIdByUserId(int id) throws SQLException,ResourceNotFoundException,DatabaseConnectionException;
+	boolean isCityStateValid(String city, String state) throws SQLException, DatabaseConnectionException;
 }
