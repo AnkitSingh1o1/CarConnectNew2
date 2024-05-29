@@ -4,12 +4,16 @@
 package com.controller;
 
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 import com.dto.AdminDto;
 import com.dto.AdminUpdate;
+import com.dto.ReservationPerCity;
+import com.dto.RevenuePerCity;
+
 import com.dto.ReservationPerCustomer;
 import com.dto.ReviewDto;
 import com.dto.VehicleDto;
@@ -26,6 +30,7 @@ import com.model.Vehicle;
 import com.model.Vendor;
 import com.options.CustomerOptions;
 import com.options.VendorOptions;
+import com.service.AddressService;
 import com.service.AdminService;
 import com.service.LoginService;
 import com.service.ReservationService;
@@ -43,7 +48,7 @@ public class AdminController {
 		ReviewService reviewService = new ReviewService();
 		LoginService loginService = new LoginService();
 		ReservationService reservationService = new ReservationService();
-
+		AddressService addressService = new AddressService();
 		while (true) {
 
 			System.out.println("----------Welcome Admin------------");
@@ -134,6 +139,8 @@ public class AdminController {
 					System.out.println("Press 6 Total Revenue Report");
 					System.out.println("Press 7 Vehicle Revenue");
 					System.out.println("Press 8 List Customer with NO Reservation History");
+					System.out.println("Press 9 List Cities by Reservation count");
+					System.out.println("Press 10: List Cities by Total Revenue");
 					System.out.println("Press 0 To Exit");
 
 					int option = sc.nextInt();
@@ -239,6 +246,34 @@ public class AdminController {
 							System.out.println(e.getMessage());
 						}
 						break;
+						
+					 case 9:
+		               	 System.out.println("Viewing Cities by Reservation Count");
+		                    try {
+		                        List<ReservationPerCity> reservationPerCity = addressService.getReservationPerCity();
+		                        for (ReservationPerCity r : reservationPerCity) {
+		                            System.out.println(r.getCity()+ ": "+ r.getReservationCount());
+		                        }
+		                    } catch (SQLException e) {
+		                        System.out.println(e.getMessage());
+		                    }catch (DatabaseConnectionException e) { 
+		                        System.out.println(e.getMessage());
+		                    }
+		                    break;
+		                    
+					 case 10:
+		               	 System.out.println("Viewing Cities by Total Revenue");
+		                    try {
+		                        List<RevenuePerCity> revenuePerCity = addressService.getRevenuePerCity();
+		                        for (RevenuePerCity r : revenuePerCity) {
+		                            System.out.println(r.getCity()+ ": "+ r.getTotalRevenue());
+		                        }
+		                    } catch (SQLException e) {
+		                        System.out.println(e.getMessage());
+		                    }catch (DatabaseConnectionException e) { 
+		                        System.out.println(e.getMessage());
+		                    }
+		                    break;
 					}
 
 				}

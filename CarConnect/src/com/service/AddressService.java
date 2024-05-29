@@ -21,15 +21,8 @@ public class AddressService {
     UserDao userDao = new UserDaoImpl();
     ReservationPerCityDao reservationPerCityDao = new ReservationPerCityDaoImpl();
  
-    private boolean isValidAddress(Address address) {
-        if(address==null) {
-            return false;
-        }
-        else if (address.getAddress_state()==null || address.getAddress_state().isEmpty()) {
-            return false;
-        }
-        else if (address.getAddress_city()==null || address.getAddress_city().isEmpty())
-        {
+    private boolean isValidAddress(Address address) throws SQLException, DatabaseConnectionException{
+        if(address==null|| !addressDao.isCityStateValid(address.getAddress_city(), address.getAddress_state())) {
             return false;
         }
         else if (address.getAddress_pincode()==null || address.getAddress_pincode().length()!=6) {
@@ -81,5 +74,9 @@ public class AddressService {
     
     public List<ReservationPerCity>getReservationPerCity() throws SQLException, DatabaseConnectionException{
         return reservationPerCityDao.getReservationCountPerCity();
+    }
+    
+    public List<RevenuePerCity>getRevenuePerCity() throws SQLException, DatabaseConnectionException{
+        return reservationPerCityDao.getRevenuePerCity();
     }
 }
