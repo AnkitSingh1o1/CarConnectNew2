@@ -1,5 +1,5 @@
 
-//Author: Ashwin Soni
+//Author: Ashwin Soni & Anand Karthick
 
 package com.controller;
 
@@ -16,6 +16,7 @@ import com.dto.RevenuePerCity;
 
 import com.dto.ReservationPerCustomer;
 import com.dto.ReviewDto;
+import com.dto.*;
 import com.dto.VehicleDto;
 import com.dto.VendorAndCount;
 import com.exception.AdminNotFoundException;
@@ -141,6 +142,7 @@ public class AdminController {
 					System.out.println("Press 8 List Customer with NO Reservation History");
 					System.out.println("Press 9 List Cities by Reservation count");
 					System.out.println("Press 10: List Cities by Total Revenue");
+					System.out.println("Press 11: List vendors by City");
 					System.out.println("Press 0 To Exit");
 
 					int option = sc.nextInt();
@@ -274,6 +276,22 @@ public class AdminController {
 		                        System.out.println(e.getMessage());
 		                    }
 		                    break;
+					 case 11:
+						    try {
+						        List<VendorsByCityDto> vendorByCityList = addressService.getVendorsByCity();
+						        if(vendorByCityList.isEmpty()) {
+						            System.out.println("No vendors found.");
+						        } else {
+						            System.out.println("Vendors by City:");
+						            for (VendorsByCityDto vendor : vendorByCityList) {
+						                System.out.println("City: " + vendor.getCity() + ", Vendor ID: " + vendor.getVendor_id() + ", Name: " + vendor.getVendor_first_name() + " " + vendor.getVendor_last_name() + ", Email: " + vendor.getVendor_email() + ", Phone: " + vendor.getVendor_phone_number() + ", Registration Date: " + vendor.getVendor_registration_date());
+						            }
+						        }
+						    } catch (SQLException | DatabaseConnectionException e) {
+						        System.out.println(e.getMessage());
+						    }
+						    break;
+
 					}
 
 				}

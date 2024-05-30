@@ -1,28 +1,24 @@
 
-//Author: Ashwin Soni
+//Authors: Ashwin Soni & Anand Karthick
 
 package com.service;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
 
-import com.dao.AdminDao;
-import com.dao.AdminDaoImpl;
-import com.dto.AdminDto;
-import com.dto.AdminUpdate;
-import com.exception.AdminNotFoundException;
-import com.exception.AuthenticationException;
-import com.exception.DatabaseConnectionException;
-import com.model.Admin;
-import com.model.Customer;
-import com.utility.VehicleRevenueAsc;
-import com.utility.VehicleRevenueDsc;
+import java.util.*;
+import com.dao.*;
+import com.dto.*;
+import com.exception.*;
+import com.model.*;
+import com.utility.*;
+
 
 
 public class AdminService {
 	AdminDao dao = new AdminDaoImpl();
-
+	 AddressDao addressDao = new AddressDaoImpl();
+	    UserDao userDao = new UserDaoImpl();
+	    ReservationPerCityDao reservationPerCityDao = new ReservationPerCityDaoImpl();
 	// Total revenue service forwarded to AdminDao class for implementation
 	public double getRevenue() throws SQLException, DatabaseConnectionException {
 		return dao.getRevenue();
@@ -82,6 +78,6 @@ public class AdminService {
 		return list;
 	}
 
-
+	
 
 }

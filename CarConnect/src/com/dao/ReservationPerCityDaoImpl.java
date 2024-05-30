@@ -1,11 +1,13 @@
+//Author : Anand Karthick
+
 package com.dao;
 import java.sql.*;
 
+
 import java.util.*;
-import com.dto.ReservationPerCity;
-import com.dto.RevenuePerCity;
+import com.dto.*;
 import com.exception.*;
-import com.utility.DBConnection;
+import com.utility.*;
 public class ReservationPerCityDaoImpl implements ReservationPerCityDao{
 @Override
 public List<ReservationPerCity>getReservationCountPerCity() throws SQLException,DatabaseConnectionException{
@@ -28,6 +30,9 @@ return reservationPerCityList;
 @Override
 public List<RevenuePerCity> getRevenuePerCity() throws SQLException, DatabaseConnectionException {
     Connection con = DBConnection.dbConnect();
+    
+    //Group by, Order by, Join
+    
     String sql = "SELECT a.address_city, SUM(r.reservation_total_cost) AS total_revenue FROM reservation r JOIN customer c ON r.customer_id = c.customer_id JOIN address a ON c.address_id = a.address_id GROUP BY UPPER(a.address_city) ORDER BY total_revenue DESC";
     PreparedStatement pstmt = con.prepareStatement(sql);
     ResultSet rst = pstmt.executeQuery();
@@ -43,4 +48,30 @@ public List<RevenuePerCity> getRevenuePerCity() throws SQLException, DatabaseCon
     DBConnection.dbClose();
     return revenuePerCityList;
 }
+
+public List<VendorsByCityDto> getVendorsByCity() throws SQLException, DatabaseConnectionException {
+    Connection con = DBConnection.dbConnect();
+    String sql = "SELECT a.address_city, v.vendor_id, v.vendor_first_name, v.vendor_last_name, v.vendor_email, v.vendor_phone_number, v.vendor_registration_date, a.address_city FROM Vendor v JOIN Address a ON v.address_id = a.address_id ORDER BY a.address_city";
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    ResultSet rst = pstmt.executeQuery();
+
+    List<VendorsByCityDto> vendorByCityList = new ArrayList<>();
+
+    while (rst.next()) {
+        int vendorId = rst.getInt("vendor_id");
+        String vendorFirstName = rst.getString("vendor_first_name");
+        String vendorLastName = rst.getString("vendor_last_name");
+        String vendorEmail = rst.getString("vendor_email");
+        String vendorPhoneNumber = rst.getString("vendor_phone_number");
+        String vendorRegistrationDate = rst.getString("vendor_registration_date");
+        String city=rst.getString("address_city");
+        VendorsByCityDto vendorByCity = new VendorsByCityDto(vendorId, vendorFirstName, vendorLastName, 
+                                                             vendorEmail, vendorPhoneNumber, vendorRegistrationDate,city);
+        vendorByCityList.add(vendorByCity);
+    }
+
+    DBConnection.dbClose();
+    return vendorByCityList;
+}
+
 }

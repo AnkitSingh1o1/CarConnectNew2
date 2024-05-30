@@ -3,13 +3,14 @@
 package com.controller;
 
 import java.util.*;
+
 import java.sql.*;
 import com.exception.ResourceNotFoundException;
 import com.exception.AddressInvalidException;
 import com.exception.DatabaseConnectionException; 
-import com.model.Address;
+import com.model.*;
 import com.dto.*;
-import com.service.AddressService;
+import com.service.*;
 
 public class AddressController {
     public static void main(String[] args) {
@@ -23,6 +24,7 @@ public class AddressController {
             System.out.println("Press 5: Find Address ID using User ID");
             System.out.println("Press 6: List Cities by Reservation count");
             System.out.println("Press 7: List Cities by Total Revenue");
+            System.out.println("Press 8: List vendors by City");
             System.out.println("Press 0: Exit");
             int input = sc.nextInt();
             if (input == 0) {
@@ -172,6 +174,23 @@ public class AddressController {
                         System.out.println(e.getMessage());
                     }
                     break;
+                    
+            	case 8:
+    			    try {
+    			        List<VendorsByCityDto> vendorByCityList = addressService.getVendorsByCity();
+    			        if(vendorByCityList.isEmpty()) {
+    			            System.out.println("No vendors found.");
+    			        } else {
+    			            System.out.println("Vendors by City:");
+    			            for (VendorsByCityDto vendor : vendorByCityList) {
+    			                System.out.println("City: " + vendor.getCity() + ", Vendor ID: " + vendor.getVendor_id() + ", Name: " + vendor.getVendor_first_name() + " " + vendor.getVendor_last_name() + ", Email: " + vendor.getVendor_email() + ", Phone: " + vendor.getVendor_phone_number() + ", Registration Date: " + vendor.getVendor_registration_date());
+    			            }
+    			        }
+    			    } catch (SQLException | DatabaseConnectionException e) {
+    			        System.out.println(e.getMessage());
+    			    }
+    			    break;
+
                            
         }}
         sc.close();
