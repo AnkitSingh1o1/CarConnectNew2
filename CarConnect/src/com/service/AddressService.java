@@ -1,10 +1,11 @@
 package com.service;
 
 import java.sql.SQLException;
+
 import java.util.List;
 
 import com.dao.AddressDao;
-import com.dao.AddressDaoImpl;
+import com.dao.*;
 import com.dao.UserDao;
 import com.dao.UserDaoImpl;
 import com.dto.*;
@@ -12,8 +13,8 @@ import com.dao.ReservationPerCityDao;
 import com.dao.ReservationPerCityDaoImpl;
 import com.exception.DatabaseConnectionException;
 import com.exception.ResourceNotFoundException;
-import com.exception.AddressInvalidException;
-import com.model.Address;
+import com.exception.*;
+import com.model.*;
 
 public class AddressService {
 
@@ -25,7 +26,7 @@ public class AddressService {
         if(address==null|| !addressDao.isCityStateValid(address.getAddress_city(), address.getAddress_state())) {
             return false;
         }
-        else if (address.getAddress_pincode()==null || address.getAddress_pincode().length()!=6) {
+        else if (address.getAddress_pincode()==null || address.getAddress_pincode().length()!=6 || address.getAddress_pincode().charAt(0)=='0') {
             return false;
         }
         
@@ -34,7 +35,7 @@ public class AddressService {
 
     public int save(Address address) throws SQLException, DatabaseConnectionException, AddressInvalidException {
         if (!isValidAddress(address)) {
-            throw new AddressInvalidException("Invalid address entered ! " + address.toString());
+            throw new AddressInvalidException("Invalid address! Enter a Valid Indian address " + address.toString());
         }
         return addressDao.save(address);
     }
@@ -79,4 +80,9 @@ public class AddressService {
     public List<RevenuePerCity>getRevenuePerCity() throws SQLException, DatabaseConnectionException{
         return reservationPerCityDao.getRevenuePerCity();
     }
+    
+    public List<VendorsByCityDto> getVendorsByCity() throws SQLException, DatabaseConnectionException {
+        return reservationPerCityDao.getVendorsByCity();
+    }
+    
 }

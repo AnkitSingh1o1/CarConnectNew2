@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import com.exception.DatabaseConnectionException;
 import com.exception.InvalidInputException;
 import com.model.User;
